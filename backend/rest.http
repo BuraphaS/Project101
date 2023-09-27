@@ -1,0 +1,47 @@
+GET http://localhost:3000/infouser
+content-type: application/json
+
+{
+    
+}
+###
+POST http://localhost:3000/register
+content-type: application/json
+
+{
+    
+    "email":"123@123",
+    "username":"123",
+    "firstname":"123",
+    "lastname":"123",
+    "phone":"123",
+    "password":"123"
+}
+###
+POST http://localhost:3000/login
+content-type: application/json
+
+{
+    
+    
+    "username":"test1",
+    "password":"1234"
+}
+
+###
+POST http://localhost:3000/carousel
+content-type: application/json
+
+{
+    
+    
+    "file_name":"https://cdn.wallpapersafari.com/70/34/UQF2K5.jpg",
+    
+}
+###
+GET http://localhost:3000/userlog
+Content-Type: application/json
+
+ {
+    "token":""
+}
