@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -18,12 +18,97 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 
+
+import { SketchPicker } from 'react-color'
+import Axios from 'axios';
+
+import { PlusOutlined } from '@ant-design/icons';
+import {
+    Button,
+    Cascader,
+    Checkbox,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Radio,
+    Select,
+    Slider,
+    Switch,
+    TreeSelect,
+    Upload,
+  } from 'antd';
+
 import { mainListItems, secondaryListItems } from '../component/NavAdmin';
+
+const { RangePicker } = DatePicker;
+    const { TextArea } = Input;
+    const normFile = (e) => {
+        if (Array.isArray(e)) {
+          return e;
+        }
+        return e?.fileList;
+      };
+
+
 const edit_home = () => {
+        const [navColor,setNavColor] = useState("")
+        const [navName,setNavName] = useState("")
+        const [bgColor,setbgColor] = useState("")
+        const [file_name,setFileCarousel] =  useState([""])
+
+        const [img,setFileCard] =  useState([""])
+        const [title,setTitle] = useState("")
+        const [detail,setDetail] = useState("")
+    const addHome = () =>{
+        const formData = new FormData()
+        formData.append('file',file_name)
+        Axios.post('http://localhost:3000/homepage',formData
+         ,{
+          file_name: file_name,        
+         }
+        )
+        .then(function (response) {
+              console.log(response);
+            })
+        .catch(er => console.log(er))
+
+       
+
+
+        Axios.post('http://localhost:3000/home',{
+          navName:navName,
+          
+          navColor:navColor,
+          
+          bgColor:bgColor,
+        })
+         .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
+
+
+      const addCard = () =>{
+      const formData = new FormData()
+      formData.append('file',img)
+      formData.append('title', title);
+      formData.append('detail', detail);
+      Axios.post('http://localhost:3000/homecard',formData
+     )
+     .then(function (response) {
+           console.log(response);
+         })
+     .catch(er => console.log(er))
+     
+        }
+
 
 
     const drawerWidth = 240;
-
     const AppBar = styled(MuiAppBar, {
       shouldForwardProp: (prop) => prop !== 'open',
     })(({ theme, open }) => ({
@@ -68,6 +153,7 @@ const edit_home = () => {
       }),
     );
     
+
     const mdTheme = createTheme();
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
@@ -150,47 +236,117 @@ const edit_home = () => {
               }}
             >
               <Toolbar />
-              {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
-                 
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#ffcbc2',border:'none'}}
-                    >
-                      
-                    </Paper>
-                  </Grid>
-                  
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#00DFA2',border:'none'}}
-                    >
-                      
-                      
-                    </Paper>
-                  </Grid>
 
                   <Grid item xs={12}>
-                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
-                      
-                      
+                  <Paper sx={{ p: 4, flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'2rem 0rem',height:'90%'}}>
+                      <div style={{display: 'flex',justifyContent:'space-between',width:'100%'}}>
+                      <Form
+                            labelCol={{
+                            span: 4,
+                            }}
+                            wrapperCol={{
+                            span: 14,
+                            }}
+                            layout="horizontal"
+                            style={{
+                            maxWidth:"50%",
+                            width:'50%'
+                            }}
+                        >   
+                            <Form.Item label="Name">
+                            <Input onChange={(event)=>{setNavName(event.target.value)}}/>
+                            </Form.Item>
+                            <Form.Item label="NavColor">
+                            <input type="color" name="color" id="color" style={{width:'100%',borderRadius:'3px',padding:'1px'}} onChange={(event)=>{
+                            setNavColor(event.target.value)}}/>
+                            </Form.Item>
+                            <Form.Item label="bgColor">
+                            <input type="color" name="color" id="color" style={{width:'100%',borderRadius:'3px',padding:'1px'}} onChange={(event)=>{
+                            setbgColor(event.target.value)}}/>
+                            </Form.Item>
+                            
+                            
+                          
+                           
+                            {/* <Form.Item label="RangePicker">
+                            <RangePicker />
+                            </Form.Item> */}
+                           
+                            {/* <Form.Item label="Switch" valuePropName="checked">
+                            <Switch />
+                            </Form.Item> */}
+                            
+                            <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCarousel(e.target.files[0])}>
+                            <Upload listType="picture-card" >
+                                <div>
+                                <PlusOutlined />
+                                <div
+                                    style={{
+                                    marginTop: 8,
+                                    }}
+                                >
+                                    Upload
+                                </div>
+                                </div>
+                            </Upload>
+                            
+                            </Form.Item>
+                            <Form.Item label="Button">
+                            <Button onClick={addHome}>Submit</Button>
+                            </Form.Item>                           
+                        </Form>
+
+                        <Form
+                            labelCol={{
+                            span: 4,
+                            }}
+                            wrapperCol={{
+                            span: 14,
+                            }}
+                            layout="horizontal"
+                            style={{
+                            maxWidth: "50%",
+                            width:'50%'
+                            }}
+                        >   
+                            <Form.Item label="Title">
+                              <Input onChange={(event)=>{setTitle(event.target.value)}}/>
+                            </Form.Item>
+                            <Form.Item label="Detail">
+                              <Input onChange={(event)=>{setDetail(event.target.value)}}/>
+                            </Form.Item>
+                           <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCard(e.target.files[0])}>
+                            <Upload listType="picture-card" >
+                                <div>
+                                <PlusOutlined />
+                                <div
+                                    style={{
+                                    marginTop: 8,
+                                    }}
+                                >
+                                    Upload
+                                </div>
+                                </div>
+                            </Upload>
+                            
+                            </Form.Item>
+                            <Form.Item label="Button">
+                            <Button onClick={addCard}>Submit</Button>
+                            </Form.Item>                           
+                        </Form>
+
+                      </div>
+                        
                     </Paper>
                   </Grid>
                 </Grid>
        
-              </Container> */}
+
+
+       
+              </Container>
             </Box>
           </Box>
         </ThemeProvider>

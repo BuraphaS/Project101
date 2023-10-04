@@ -67,7 +67,7 @@ const Navbar1 = () => {
     }
 
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleLogin = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -75,6 +75,7 @@ const Navbar1 = () => {
           username: data.get('username'),
           password: data.get('password'),
         };
+          
               fetch('http://localhost:3000/login', {
               method: "POST",
               headers: {
@@ -87,9 +88,8 @@ const Navbar1 = () => {
               .then (data =>{
                  if(data.status == 'ok'){
                   localStorage.setItem('token',data.token)
-                  
                   alert('Login Success')
-                  // navigate('/list');
+                   navigate('/dashboard');
                   window.location.reload()
                  }else{
                   alert('Something Wrong Please Try Again')
@@ -99,6 +99,7 @@ const Navbar1 = () => {
                   console.error('Error',error)
               })
             }
+            
   return (
     <div>
         <Navbar bg="dark" data-bs-theme="dark" key="sm" expand="sm" className="bg-body-tertiary mb-1 fixed-top">

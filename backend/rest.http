@@ -10,10 +10,10 @@ content-type: application/json
 
 {
     
-    "email":"123@123",
-    "username":"123",
-    "firstname":"123",
-    "lastname":"123",
+    "email":"test@123",
+    "username":"test",
+    "firstname":"test",
+    "lastname":"test",
     "phone":"123",
     "password":"123"
 }
@@ -24,24 +24,56 @@ content-type: application/json
 {
     
     
-    "username":"test1",
-    "password":"1234"
+    "username":"test",
+    "password":"123"
 }
-
 ###
-POST http://localhost:3000/carousel
+POST http://localhost:3000/home
 content-type: application/json
 
 {
     
     
-    "file_name":"https://cdn.wallpapersafari.com/70/34/UQF2K5.jpg",
+    "navColor":"#101010",
+    "navName":"test",
+    "bgColor":"#101010"
+}
+
+###
+POST http://localhost:3000/homepage
+content-type: application/json
+
+{
+    
+    
+    "file_name":"1696355246365_Img (2).png",
     
 }
+
+###
+POST http://localhost:3000/homecard
+content-type: application/json
+
+{
+    
+    
+    "file_name":"1696355246365_Img (2).png",
+    "title":"tttw",
+    "detail":"rrrrr"
+    
+}
+
 ###
 GET http://localhost:3000/userlog
 Content-Type: application/json
 
  {
-    "token":""
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAMTIzIiwidXNlcm5hbWUiOiJ0ZXN0IiwiZmlyc3RuYW1lIjoidGVzdCIsImxhc3RuYW1lIjoidGVzdCIsInBob25lIjoxMjMsImlkIjoyNSwiaWF0IjoxNjk2MzE0ODQwLCJleHAiOjE2OTYzMjIwNDB9.zmqwwjkVIjrWz536kxKUamV7F6FQmJTvmK0TqXiCSrs"
+}
+
+###
+GET http://localhost:3000/carousel
+Content-Type: application/json
+
+ {
 }
