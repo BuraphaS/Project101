@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect  } from 'react';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -18,7 +18,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 
-
+import ListCard from './component/listCard';
+import ListCarousel from './component/listCarousel';
 import { SketchPicker } from 'react-color'
 import Axios from 'axios';
 
@@ -37,9 +38,14 @@ import {
     Switch,
     TreeSelect,
     Upload,
+    Space, 
+    Table,
+    Tag,
+    Card
   } from 'antd';
 
 import { mainListItems, secondaryListItems } from '../component/NavAdmin';
+
 
 const { RangePicker } = DatePicker;
     const { TextArea } = Input;
@@ -59,7 +65,42 @@ const edit_home = () => {
 
         const [img,setFileCard] =  useState([""])
         const [title,setTitle] = useState("")
+
+
         const [detail,setDetail] = useState("")
+
+
+        const [Carousel,setCarousel] = useState([]);
+
+
+        const [Card1,setCard1] = useState([]);
+
+
+      const getCarousel = () =>{
+          Axios.get('http://localhost:3000/carousel')
+          .then ((response) => {
+              setCarousel(response.data)
+          })
+      }
+      
+
+        const getCard = () =>{
+          Axios.get('http://localhost:3000/card')
+          .then ((response) => {
+              setCard1(response.data)
+          })
+      }
+      
+      
+      
+      
+      useEffect(() => {
+          getCarousel();
+          getCard();
+        }, []);
+
+        
+
     const addHome = () =>{
         const formData = new FormData()
         formData.append('file',file_name)
@@ -342,11 +383,34 @@ const edit_home = () => {
                     </Paper>
                   </Grid>
                 </Grid>
-       
-
-
-       
               </Container>
+
+              <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Grid container spacing={3}>
+
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 4,display:'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'2rem 0rem',height:'90%'}}>
+                      
+                        <ListCard />
+                      
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Container>
+
+              <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Grid container spacing={3}>
+
+                  <Grid item xs={12}>
+                    <Paper sx={{ p: 4,display:'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'2rem 0rem',height:'90%'}}>
+                      
+                        <ListCarousel />
+                      
+                    </Paper>
+                  </Grid>
+                </Grid>
+              </Container>
+
             </Box>
           </Box>
         </ThemeProvider>

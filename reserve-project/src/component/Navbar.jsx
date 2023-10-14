@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState , useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -47,8 +47,19 @@ const Navbar1 = () => {
 
     const [showRegister, setShowRegister] = useState(false);
     const handleCloseRegister = () => setShowRegister(false);
-    
 
+    const [Home,setHome] = useState([]);
+
+    const getHome = ()=>{
+      Axios.get('http://localhost:3000/home')
+      .then ((response) => {
+        setHome(response.data)
+    })
+    }
+
+    useEffect(() => {
+      getHome();
+    }, []);
     const addRegister = () =>{
       Axios.post('http://localhost:3000/register',{
         email: email,
@@ -102,9 +113,12 @@ const Navbar1 = () => {
             
   return (
     <div>
+      {Home.map((val, index) => (
         <Navbar bg="dark" data-bs-theme="dark" key="sm" expand="sm" className="bg-body-tertiary mb-1 fixed-top">
             <Container fluid>
-            <Navbar.Brand href="#home">LOGO</Navbar.Brand>
+            
+            <Navbar.Brand href="#home">{val.navName}</Navbar.Brand>
+            
             <Navbar.Toggle aria-controls="offcanvasNavbar-expand-sm" />
             <Navbar.Offcanvas
               id="offcanvasNavbar-expand-sm"
@@ -116,6 +130,7 @@ const Navbar1 = () => {
                   
                 </Offcanvas.Title>
               </Offcanvas.Header>
+              
               <Offcanvas.Body>
                 <Nav className="justify-content-end flex-grow-1 pe-3">
                 <Nav.Link href="#home">HOME</Nav.Link>
@@ -125,9 +140,11 @@ const Navbar1 = () => {
                 </Nav>
                 
               </Offcanvas.Body>
+              
             </Navbar.Offcanvas>
             </Container>
         </Navbar>
+        ))}
 
 
       <Modal

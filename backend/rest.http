@@ -64,6 +64,18 @@ content-type: application/json
 }
 
 ###
+PUT  http://localhost:3000/cardEdit/1
+content-type: application/json
+
+{
+    
+   
+    "title":"tttw",
+    "detail":"rrrrr"
+    
+}
+
+###
 GET http://localhost:3000/userlog
 Content-Type: application/json
 
@@ -72,8 +84,16 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3000/carousel
+GET http://localhost:3000/home
 Content-Type: application/json
 
  {
+}
+
+###
+DELETE http://localhost:3000/delete_card/7
+Content-Type: application/json
+
+ {
+    
 }

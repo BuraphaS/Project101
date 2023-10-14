@@ -129,6 +129,36 @@ app.post('/home',jsonParser,(req,res,next)=>{
             }
     )
 })
+
+app.put('/cardEdit/:id', jsonParser,(req, res,next) => {
+    // const file = req.file.filename;
+    const title = req.body.title;
+    const detail = req.body.detail;
+    const id = req.params.id;
+
+    connection.query('UPDATE home_card SET title = ? , detail = ? WHERE id = ? ;', [title,detail, id], (err, result) => {
+      if (err) {
+        res.json({ status: 'error', message: err.message });
+      } else {
+        res.json({ status: 'ok', message: 'Success' });
+      }
+    });
+  });
+app.put('/cardImgEdit/:id', upload.single('file'), jsonParser, (req, res, next) => {
+    const file = req.file.filename;
+    const id = req.params.id;
+    connection.query(
+        'UPDATE home_card SET img = ? WHERE id = ?',
+        [file, id],
+        function (err, results, fields) {
+            if (err) {
+                res.json({ status: 'error', message: err })
+                return
+            }
+            res.json({ status: 'ok' })
+        }
+    )
+})
 app.post('/homepage',upload.single('file'),jsonParser,(req,res,next)=>{
     const file = req.file.filename;
     connection.query(
@@ -184,6 +214,36 @@ app.get('/carousel',(req,res)=>{
      }
     })
  })
+ app.get('/home',(req,res)=>{
+    connection.query('SELECT * FROM home',(err,result)=>{
+     if(err){
+         console.log(err);
+     }else{
+         res.send(result)
+     }
+    })
+ })
+
+ app.get('/carousel',(req,res)=>{
+    connection.query('SELECT * FROM home_carousel',(err,result)=>{
+     if(err){
+         console.log(err);
+     }else{
+         res.send(result)
+     }
+    })
+ })
+
+ app.get('/home',(req,res)=>{
+    connection.query('SELECT * FROM home',(err,result)=>{
+     if(err){
+         console.log(err);
+     }else{
+         res.send(result)
+     }
+    })
+ })
+
 
 function setUser(req,res,next){
     const userId= req.body.userId
@@ -192,6 +252,27 @@ function setUser(req,res,next){
     }
     next()
 }
+
+ app.delete('/delete_card/:id', (req, res) => { 
+    connection.query("DELETE FROM home_card WHERE id = ?",[req.params.id] ,(err, result) => {
+      if (err){
+        console.log(err);
+      } else{
+        res.json({ status: 'ok'});
+      }      
+    });
+  });
+
+  app.delete('/delete_carousel/:id', (req, res) => { 
+    connection.query("DELETE FROM home_carousel WHERE id = ?",[req.params.id] ,(err, result) => {
+      if (err){
+        console.log(err);
+      } else{
+        res.json({ status: 'ok'});
+      }      
+    });
+  });
+
 
 app.listen(3000,function(){
     console.log("Server STARTTTTTT");

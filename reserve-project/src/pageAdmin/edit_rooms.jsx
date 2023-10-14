@@ -18,6 +18,30 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
 
+
+import Axios from 'axios';
+
+import { PlusOutlined } from '@ant-design/icons';
+import {
+    Button,
+    Cascader,
+    Checkbox,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Radio,
+    Select,
+    Slider,
+    Switch,
+    TreeSelect,
+    Upload,
+    Space, 
+    Table,
+    Tag,
+    Card
+  } from 'antd';
+
 import { mainListItems, secondaryListItems } from '../component/NavAdmin';
 const edit_rooms = () => {
 
@@ -150,47 +174,70 @@ const edit_rooms = () => {
               }}
             >
               <Toolbar />
-              {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+              <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
-                 
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#ffcbc2',border:'none'}}
-                    >
-                      
-                    </Paper>
-                  </Grid>
-                  
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#00DFA2',border:'none'}}
-                    >
-                      
-                      
-                    </Paper>
-                  </Grid>
 
                   <Grid item xs={12}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
                       
-                      
+                  <Form
+                            labelCol={{
+                            span: 4,
+                            }}
+                            wrapperCol={{
+                            span: 14,
+                            }}
+                            layout="horizontal"
+                            style={{
+                            maxWidth:"50%",
+                            width:'50%'
+                            }}
+                        >   
+                            <Form.Item label="Name">
+                            <Input />
+                            </Form.Item>         
+
+                            <Form.Item label="Detail">
+                            <Input />
+                            </Form.Item>   
+
+                            <Form.Item label="จำนวน">
+                            <Input />
+                            </Form.Item>   
+
+                            <Form.Item label="Price">
+                            <Input />
+                            </Form.Item>   
+
+                            <Form.Item label="สิ่งอำนวยความสะดวก">
+                            <Input />
+                            </Form.Item>  
+
+                            <Form.Item label="Upload" valuePropName="fileList" >
+                            <Upload listType="picture-card" >
+                                <div>
+                                <PlusOutlined />
+                                <div
+                                    style={{
+                                    marginTop: 8,
+                                    }}
+                                >
+                                    Upload
+                                </div>
+                                </div>
+                            </Upload>
+                            
+                            </Form.Item>
+                            <Form.Item label="Button">
+                            <Button >Submit</Button>
+                            </Form.Item>                           
+                        </Form>
+
                     </Paper>
                   </Grid>
                 </Grid>
        
-              </Container> */}
+              </Container>
             </Box>
           </Box>
         </ThemeProvider>
