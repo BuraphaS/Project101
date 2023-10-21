@@ -27,6 +27,12 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import Collapse from '@mui/material/Collapse';
 import List from '@mui/material/List';
 
+
+const handleClick = () => {
+  setOpen(!open);
+};
+
+
 const NavAdmin = () => {
  
   return (
@@ -37,9 +43,7 @@ const NavAdmin = () => {
   
 }
 
-const handleClick = () => {
-  setOpen(!open);
-};
+
 export const mainListItems = (
   
     <React.Fragment>
@@ -78,7 +82,34 @@ export const mainListItems = (
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ข้อมูลห้อง" />
+            <ListItemText primary="ข้อมูลห้องพัก" />
+          </ListItemButton>
+        </Link>
+        
+        <Link id="RouterNavLink" style={{textDecoration:"none",color:'#000000'}} to="/edit_meeting">
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary="ข้อมูลห้องประชุม" />
+          </ListItemButton>
+        </Link>
+
+        <Link id="RouterNavLink" style={{textDecoration:"none",color:'#000000'}} to="/edit_Gym">
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary="ข้อมูลห้อง Gym" />
+          </ListItemButton>
+        </Link>
+
+        <Link id="RouterNavLink" style={{textDecoration:"none",color:'#000000'}} to="/edit_Spa">
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <StarBorder />
+            </ListItemIcon>
+            <ListItemText primary="ข้อมูลห้องสปา" />
           </ListItemButton>
         </Link>
 

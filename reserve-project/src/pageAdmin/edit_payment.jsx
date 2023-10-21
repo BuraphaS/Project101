@@ -1,199 +1,188 @@
-import * as React from 'react'
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
-import MuiDrawer from '@mui/material/Drawer';
-import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-// import Badge from '@mui/material/Badge';
+import React, { useState,useEffect } from 'react'
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-// import Link from '@mui/material/Link';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-// import NotificationsIcon from '@mui/icons-material/Notifications';
-
-import { mainListItems, secondaryListItems } from '../component/NavAdmin';
+import { PlusOutlined } from '@ant-design/icons';
+import Axios from 'axios'
+import {
+  Button,
+  Image,
+  Form,
+  Input,
+  Upload,
+  Table,
+} from 'antd';
+        const normFile = (e) => {
+            if (Array.isArray(e)) {
+              return e;
+            }
+            return e?.fileList;
+          };
 const edit_payment = () => {
 
+  const [payment,setPayment] = useState([])
 
-    const drawerWidth = 240;
+  const [account_number,setAccount_number] = useState("")
+  const [bank,setBank_name] = useState("")
+  const [account_name,setAccount_name] = useState("")
+  const [img,setFile] = useState([""])
 
-    const AppBar = styled(MuiAppBar, {
-      shouldForwardProp: (prop) => prop !== 'open',
-    })(({ theme, open }) => ({
-      zIndex: theme.zIndex.drawer + 1,
-      transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-      }),
-      ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-          easing: theme.transitions.easing.sharp,
-          duration: theme.transitions.duration.enteringScreen,
-        }),
-      }),
-    }));
-    
-    const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-      ({ theme, open }) => ({
-        '& .MuiDrawer-paper': {
-          position: 'relative',
-          whiteSpace: 'nowrap',
-          width: drawerWidth,
-          transition: theme.transitions.create('width', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          boxSizing: 'border-box',
-          ...(!open && {
-            overflowX: 'hidden',
-            transition: theme.transitions.create('width', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up('sm')]: {
-              width: theme.spacing(9),
-            },
-          }),
-        },
-      }),
-    );
-    
-    const mdTheme = createTheme();
-    const [open, setOpen] = React.useState(true);
-    const toggleDrawer = () => {
-      setOpen(!open);
+  const addPayment = () => {
+    const formData = new FormData()
+    formData.append('account_number',account_number)
+    formData.append('bank',bank)
+    formData.append('file',img)
+    formData.append('account_name',account_name)
+    Axios.post('http://localhost:3000/payment',formData
+     
+    )
+    .then(function (response) {
+          console.log(response);
+        })
+    .catch(er => console.log(er))
+}
+
+  const getPayment = () =>{
+    Axios.get('http://localhost:3000/payment')
+    .then ((response) => {
+      setPayment(response.data)
+        })
+    }
+    const deletePayment = (id) => {
+      Axios.delete(`http://localhost:3000/delete/payment/${id}`)
+        
+           alert('Delete Success')
+           window.location.reload()
+         
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
+    useEffect(() => {
+      getPayment();
+    }, []);
+    const columns = [
+      {
+          title: 'ID',
+          dataIndex: 'id',
+          align:'center',
+          width:'5%'
+      },
+      {
+          title: 'Bank',
+          dataIndex: 'bank',
+          
+      },
+      {
+        title: 'Number',
+        dataIndex: 'number',
+        
+    },
+    {
+      title: 'Name',
+      dataIndex: 'name',
+      
+   },
+   {
+    title: 'Picture',
+    dataIndex: 'img',
+    width:'25%'
+    },
+      {
+        title: 'Delete',
+        dataIndex: 'edit',
+        align:'center',
+        width:'10%'
+    },
+    ]
+    const data = payment.map((val, index) => ({
+      key: index.toString(),
+      id: val.id,
+      bank: val.bank,
+      number:val.account_number,
+      name:val.account_name,
+      img:<Image className='' src={`http://localhost:3000/img/${val.img}`} rounded />,
+
+    
+      edit: 
+            <Button type='primary' danger onClick={() => deletePayment(val.id)}>Delete</Button> 
+            
+    }));
+  
+  
   return (
     <div>
-         <ThemeProvider theme={mdTheme}>
-          <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <AppBar position="absolute" open={open}>
-            
-              <Toolbar
-                sx={{
-                  pr: '24px',backgroundColor:"#111927" 
-                }}
-              >
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={toggleDrawer}
-                  sx={{
-                    marginRight: '36px',
-                    ...(open && { display: 'none' }),
-                  }}
-                >
-                  <MenuIcon />
-                </IconButton>
-                <Typography
-                  component="h1"
-                  variant="h6"
-                  color="inherit"
-                  noWrap
-                  sx={{ flexGrow: 1 }}
-                >
-                  ชำระเงิน
-                </Typography>
-                
-              </Toolbar>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-              <Toolbar
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'flex-end',
-                  px: [1],
-                }}
-              >
-                <h2 style={{width:'100%',margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'center'}}>LOGO</h2>
-                {/* <img style={{width:"150px",margin:"5px 5px"}} src={Logo} alt="" /> */}
-                <IconButton onClick={toggleDrawer}>
-                  <ChevronLeftIcon />
-                </IconButton>
-              </Toolbar>
-              <Divider />
-              <List component="nav"
-                sx={{
-                  backgroundColor:"light" ,
-                  
-                  height:"100%"
-                }}>
-                {mainListItems}
-                <Divider sx={{ my: 1 }} />
-                {secondaryListItems}
-              </List>
-            </Drawer>
-            <Box
-              component="main"
-              sx={{
-                backgroundColor: (theme) =>
-                  theme.palette.mode === 'light'
-                    ? theme.palette.grey[100]
-                    : theme.palette.grey[900],
-                flexGrow: 1,
-                height: '100vh',
-                overflow: 'auto',
-              }}
-            >
-              <Toolbar />
-              {/* <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
-                 
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#ffcbc2',border:'none'}}
-                    >
-                      
-                    </Paper>
-                  </Grid>
-                  
-                  <Grid item xs={12} md={4} lg={3}>
-                    <Paper
-                      sx={{
-                        p: 2,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: 150,
-                      }}
-                      style={{boxShadow:'rgb(38, 57, 77) 0px 20px 30px -10px',backgroundColor:'#00DFA2',border:'none'}}
-                    >
-                      
-                      
-                    </Paper>
-                  </Grid>
 
                   <Grid item xs={12}>
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
-                      
-                      
+                  <Form
+                            labelCol={{
+                            span: 6,
+                            }}
+                            wrapperCol={{
+                            span: 14,
+                            }}
+                            layout="horizontal"
+                            style={{
+                            maxWidth:"50%",
+                            width:'50%'
+                            }}
+                        >  
+                        <h5 style={{marginBottom:'2rem',textAlign:'center'}}></h5>
+                            <Form.Item label="ชื่อธนาคาร">
+                            <Input onChange={(event)=>{setBank_name(event.target.value)}}/>
+                            </Form.Item>
+
+                            <Form.Item label="เลขที่บัญชี">
+                            <Input onChange={(event)=>{setAccount_number(event.target.value)}}/>
+                            </Form.Item>
+
+                            <Form.Item label="ชื่อเจ้าของบัญชี">
+                            <Input onChange={(event)=>{setAccount_name(event.target.value)}}/>
+                            </Form.Item>
+                            
+                            <Form.Item label="รูปภาพ" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
+                            <Upload listType="picture-card" >
+                                <div>
+                                <PlusOutlined />
+                                <div
+                                    style={{
+                                    marginTop: 8,
+                                    }}
+                                >
+                                    Upload
+                                </div>
+                                </div>
+                            </Upload>
+                            
+                            </Form.Item>
+                            
+                            <Button style={{width:'58%',justifyContent:'center',marginLeft:'8.4rem',alignItems:'center',textAlign:'center'}} onClick={addPayment}>Submit</Button>
+                                                    
+                        </Form>
+                        
+
+                        
                     </Paper>
                   </Grid>
                 </Grid>
        
-              </Container> */}
-            </Box>
-          </Box>
-        </ThemeProvider>
+              </Container>
+
+              <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                <Grid container spacing={3}>
+
+                  <Grid item xs={12}>
+                  <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
+                  <Table style={{height:'100%',paddingBottom:'0.5rem'}} columns={columns} dataSource={data} size="small" />
+                  </Paper>
+                  </Grid>
+                </Grid>
+       
+              </Container>
     </div>
   )
 }

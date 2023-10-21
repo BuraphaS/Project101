@@ -1,4 +1,4 @@
-GET http://localhost:3000/infouser
+GET http://localhost:3000/user
 content-type: application/json
 
 {
@@ -28,25 +28,31 @@ content-type: application/json
     "password":"123"
 }
 ###
-POST http://localhost:3000/home
+POST http://localhost:3000/payment
 content-type: application/json
 
 {
     
     
-    "navColor":"#101010",
-    "navName":"test",
-    "bgColor":"#101010"
+    "account_number":"101010",
+    "bank_name":"test",
+    "account_name":"#101010",
+    "img":"1.png"
 }
 
 ###
-POST http://localhost:3000/homepage
+POST http://localhost:3000/room
 content-type: application/json
 
 {
     
     
-    "file_name":"1696355246365_Img (2).png",
+    "name":"test",
+    "detail":"test",
+    "price":"2",
+    "quantity":"2",
+    "img":"1",
+    "facilities_id":"1"
     
 }
 
@@ -64,30 +70,31 @@ content-type: application/json
 }
 
 ###
-PUT  http://localhost:3000/cardEdit/1
+PUT  http://localhost:3000/Edit/spa/1
 content-type: application/json
 
 {
     
    
-    "title":"tttw",
-    "detail":"rrrrr"
-    
+    "room_name":"สปา 1",
+    "detail":"เปิด 08.00 - 12.00",
+    "service":""
 }
 
 ###
-GET http://localhost:3000/userlog
+POST http://localhost:3000/userlog
 Content-Type: application/json
 
  {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAMTIzIiwidXNlcm5hbWUiOiJ0ZXN0IiwiZmlyc3RuYW1lIjoidGVzdCIsImxhc3RuYW1lIjoidGVzdCIsInBob25lIjoxMjMsImlkIjoyNSwiaWF0IjoxNjk2MzE0ODQwLCJleHAiOjE2OTYzMjIwNDB9.zmqwwjkVIjrWz536kxKUamV7F6FQmJTvmK0TqXiCSrs"
+    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAMTIzIiwidXNlcm5hbWUiOiJ0ZXN0IiwiZmlyc3RuYW1lIjoidGVzdCIsImxhc3RuYW1lIjoidGVzdCIsInBob25lIjoxMjMsImlkIjoyNSwiaWF0IjoxNjk3NDcwOTMyLCJleHAiOjE2OTc0NzgxMzJ9.7qXdwaAjIK2bel7djPUAljU_XB7eRPY2_XRpW04I_Ps"
 }
 
 ###
-GET http://localhost:3000/home
+POST http://localhost:3000/facilities
 Content-Type: application/json
 
  {
+    "facilities":"Hair dryer"
 }
 
 ###

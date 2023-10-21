@@ -26,21 +26,21 @@ const Carousel1 = () => {
     
     <div style={{width:'100%',alignItems:'center',justifyContent:'center',display:'flex',margin:'0 auto'}}>
       
-        <Carousel activeIndex={index} onSelect={handleSelect} className='w-100 m-0 p-0'>
+        <Carousel activeIndex={index} onSelect={handleSelect} className='w-100 mt-5 p-0'>
         {data.map((item,index)=>(
       <Carousel.Item>
       
         <img
-          style={{height:'600px',width:'100%' ,borderRadius:'10px'}}
+          style={{height:'600px',width:'100%' ,borderRadius:'0px'}}
           className="d-block w-100"
           src={`http://localhost:3000/img/${item.file_name}`}
-          alt="First slide"
+          alt=""
           key={index}
         />
         
         <Carousel.Caption>
-          <h3>{item.file_name}</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <h3></h3>
+          <p></p>
         </Carousel.Caption>
       </Carousel.Item>
       ))}

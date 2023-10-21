@@ -26,9 +26,9 @@ useEffect(() => {
     <CardGroup className='p-5 w-25'>
 
       <Card className='p-0 w-50'>
-        <Card.Img variant="top" src={`http://localhost:3000/img/${item.img}`} />
+        <Card.Img variant="top" src={`http://localhost:3000/img/${item.img}`} style={{height:'40%',maxHeight:'40%',minHeight:'40%'}}/>
         <Card.Body>
-          <Card.Title>{item.title}</Card.Title>
+          <Card.Title style={{textAlign:'center',marginBottom:'1rem'}}>{item.title}</Card.Title>
           <Card.Text>
            {item.detail}
           </Card.Text>

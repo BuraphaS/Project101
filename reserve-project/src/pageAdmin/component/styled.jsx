@@ -1,30 +1,7 @@
 import styled from "styled-components"
 
 export const Tab1 = styled.table`
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    border:0.5px solid #dddddd
-    width: 1000%;
-    max-width: 145%;
-    position:relative;
-    right:0;
-    left:0;
-  }
-  tr{
-    width:100%;
-  }
-  td, th {
-    border: 1px solid #dddddd;
-    text-align: center;
-    padding: 10px;
-    width:33%
-    
-  }
-  
-  tr:nth-child(even) {
-    background-color: #eeeeee;
-  }
+
   .button-67 {
     background-color: #e62143;
     border-radius: 4px;
@@ -52,7 +29,7 @@ table {
   }
   
   .button-67:hover {
-    background-color: #065dd8;
+    background-color: #ba1e39;
     transform: translateY(-2px);
   }
   
@@ -98,6 +75,46 @@ table {
 
 @media (min-width: 768px) {
   .button-66 {
+    padding: 16px 44px;
+    min-width: 50px;
+  }
+}
+`
+export const Button1 = styled.button
+`
+.button-67 {
+  background-color: #e62143;
+  border-radius: 4px;
+  border: none;
+  box-shadow: rgba(1,60,136,.5) 0 -1px 3px 0 inset,rgba(0,44,97,.1) 0 3px 6px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: inherit;
+  font-family: "Space Grotesk",-apple-system,system-ui,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  margin: 0;
+  min-height: 56px;
+  min-width: 120px;
+  padding: 16px 20px;
+  position: relative;
+  text-align: center;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  vertical-align: baseline;
+  transition: all .2s cubic-bezier(.22, .61, .36, 1);
+}
+
+.button-67:hover {
+  background-color: #ba1e39;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .button-67 {
     padding: 16px 44px;
     min-width: 50px;
   }

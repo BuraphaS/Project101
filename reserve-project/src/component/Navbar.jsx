@@ -100,8 +100,8 @@ const Navbar1 = () => {
                  if(data.status == 'ok'){
                   localStorage.setItem('token',data.token)
                   alert('Login Success')
-                   navigate('/dashboard');
                   window.location.reload()
+                  navigate('/dashboard');
                  }else{
                   alert('Something Wrong Please Try Again')
                  }
@@ -114,7 +114,7 @@ const Navbar1 = () => {
   return (
     <div>
       {Home.map((val, index) => (
-        <Navbar bg="dark" data-bs-theme="dark" key="sm" expand="sm" className="bg-body-tertiary mb-1 fixed-top">
+        <Navbar style={{backgroundColor:val.navColor,opacity:'95%'}}  key="sm" expand="sm" className=" mb-1 fixed-top">
             <Container fluid>
             
             <Navbar.Brand href="#home">{val.navName}</Navbar.Brand>
@@ -132,9 +132,9 @@ const Navbar1 = () => {
               </Offcanvas.Header>
               
               <Offcanvas.Body>
-                <Nav className="justify-content-end flex-grow-1 pe-3">
-                <Nav.Link href="#home">HOME</Nav.Link>
-                <Nav.Link href="#">ROOM</Nav.Link>
+                <Nav className="justify-content-end flex-grow-1 pe-5">
+                <Nav.Link href="/">HOME</Nav.Link>
+                <Nav.Link href="/roomPage">ROOM</Nav.Link>
                 <Nav.Link href="#"  onClick={handleShowRegister}>REGISTER</Nav.Link>
                 <Nav.Link href="#"  onClick={handleShowLogin}>LOGIN</Nav.Link>
                 </Nav>
@@ -207,26 +207,6 @@ const Navbar1 = () => {
         </Box>
         
       </Container1>
-
-        {/* <Modal.Header closeButton>
-          <Modal.Title>LOGIN</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group className="mb-3" controlId="formGroupEmail">
-              <Form.Label>Email or Username</Form.Label>
-              <Form.Control  required type="text"  name="username"  id="username" placeholder="Enter email" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control  required type="password" name="password"  id="password" placeholder="Password" />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          
-          <Button variant="primary" onClick={handleLogin}>Login</Button>
-        </Modal.Footer> */}
       </Modal>
 
 

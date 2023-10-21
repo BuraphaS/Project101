@@ -1,5 +1,7 @@
 import React, { useState,useEffect  } from 'react'
-import { Tab1 } from './styled';
+import { Tab1,Button1 } from './styled';
+import { Table, Button } from 'antd';
+import Image from 'react-bootstrap/Image';
 
 import Axios from 'axios'
 const listCarousel = () => {
@@ -25,28 +27,35 @@ const listCarousel = () => {
     useEffect(() => {
         getCarousel();
       }, []);
+
+
+
+    const columns = [
+        {
+          title: 'Picture',
+          dataIndex: 'picture',
+        },
+        {
+          title: 'Delete',
+          dataIndex: 'edit',
+          align:'center'
+        },
+      ];
+      const data = Carousel.map((val, index) => ({
+        key: index.toString(),
+        picture: <Image className='w-50' src={`http://localhost:3000/img/${val.file_name}`} rounded />,
+        edit:   <Button type='primary' danger onClick={() => deleteCarousel(val.id)}>Delete</Button>
+      }));
+
+
   return (
     <div>
-        <Tab1>
-            <table>
-                <tr>
-                <th>Picture</th>
-                <th>Delete</th>
-                </tr>
-                {Carousel.map((val, index) => (
-                <tr key={index} style={{height:'35px'}} >
-                {/* <td>{val.id}</td> */}
-                <td>
-                     <img style={{width:'150px',height:'125px',margin:'0 auto', display:'flex' }} src={`http://localhost:3000/img/${val.file_name}`}/>  
-                </td>
-                <td>
-                    <button class="button-67" role="button" onClick={() => deleteCarousel(val.id)}>Delete</button>
-                </td>
-                       
-                </tr>
-                ))}
-            </table>
-        </Tab1>
+        
+        
+            <Table style={{height:'100%',marginBottom:'5.5rem',paddingBottom:'3.5rem'}} columns={columns} dataSource={data} size="smaller" />
+        
+        
+
     </div>
   )
 }
