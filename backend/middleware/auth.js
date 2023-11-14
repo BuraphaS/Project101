@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-const secret = 'Lionel';
+const secret =  "Lionel";
 
 
 const verifyToken = (req, res, next) => {

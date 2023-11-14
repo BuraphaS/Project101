@@ -1,4 +1,5 @@
 import * as React from 'react'
+import {useEffect,useState} from 'react'
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
@@ -17,11 +18,37 @@ import Paper from '@mui/material/Paper';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 // import NotificationsIcon from '@mui/icons-material/Notifications';
+import Axios from 'axios';
 
-import { mainListItems, secondaryListItems } from './component/NavAdmin';
+import MainListItems from './component/mainListItems';
+import SecondaryListItems from './component/secondaryListItems';
 
 const AdminRoute = ({children}) => {
-  
+  const [User,setUser] = useState(null)
+
+  const getUser = () => {
+      
+      const token = localStorage.getItem('token');
+      
+        Axios.get("http://localhost:3000/userlog", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((response) => {
+            setUser(response.data);
+          })
+          .catch((error) => {
+            console.error('Error', error);
+          });
+      
+    };
+
+    useEffect(() => {
+      getUser();
+    }, []);
+
+
     const drawerWidth = 240;
 
     const AppBar = styled(MuiAppBar, {
@@ -105,8 +132,17 @@ const AdminRoute = ({children}) => {
                   noWrap
                   sx={{ flexGrow: 1 }}
                 >
-                  {/* รายงาน */}
+                  
                 </Typography>
+                {User ? (
+                  <a href='/changeAdmin' style={{textDecoration:'none',color:'#ffffff'}}>
+                  {User.firstname} {User.lastname}
+                  </a>
+                ):
+                <a href='#'>
+                  
+                </a>
+                }
                 
               </Toolbar>
             </AppBar>
@@ -132,9 +168,9 @@ const AdminRoute = ({children}) => {
                   
                   height:"100%"
                 }}>
-                {mainListItems}
+                <MainListItems/>
                 <Divider sx={{ my: 1 }} />
-                {secondaryListItems}
+               <SecondaryListItems/>
               </List>
             </Drawer>
             <Box

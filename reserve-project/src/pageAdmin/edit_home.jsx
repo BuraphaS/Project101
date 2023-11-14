@@ -16,7 +16,7 @@ import Paper from '@mui/material/Paper';
 // import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-// import NotificationsIcon from '@mui/icons-material/Notifications';
+
 
 import ListCard from './component/listCard';
 import ListCarousel from './component/listCarousel';
@@ -105,6 +105,7 @@ const edit_home = () => {
           getCarousel();
           getCard();
           getHome();
+          getUser();
         }, []);
 
         
@@ -119,21 +120,33 @@ const edit_home = () => {
         )
         .then(function (response) {
               console.log(response);
+              swal({
+                title:"Add Picture Success",
+                icon:"success",
+                button:'OK'
+              }).then(function(){
+                location.reload();})
             })
         .catch(er => console.log(er))
 
        
 
 
-        Axios.post('http://localhost:3000/home',{
-          navName:navName,
+        Axios.put('http://localhost:3000/home',{
+          navName:navName||Home[0].navName,
           
-          navColor:navColor,
+          navColor:navColor||Home[0].navColor,
           
-          bgColor:bgColor,
+          bgColor:bgColor||Home[0].bgColor,
         })
          .then(function (response) {
           console.log(response);
+          swal({
+            title:"Changed Success",
+            icon:"success",
+            button:'OK'
+          }).then(function(){
+            location.reload();})
         })
         .catch(function (error) {
           console.log(error);
@@ -150,16 +163,135 @@ const edit_home = () => {
      )
      .then(function (response) {
            console.log(response);
+           swal({
+            title:"Add Success",
+            icon:"success",
+            button:'OK'
+          }).then(function(){
+            location.reload();})
          })
      .catch(er => console.log(er))
      
         }
 
+        const [User,setUser] = useState(null)
 
+        const getUser = () => {
+            
+            const token = localStorage.getItem('token');
+            
+              Axios.get("http://localhost:3000/userlog", {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                },
+              })
+                .then((response) => {
+                  setUser(response.data);
+                })
+                .catch((error) => {
+                  console.error('Error', error);
+                });
+            
+          };
+        
+      const drawerWidth = 240;
+  
+      const AppBar = styled(MuiAppBar, {
+        shouldForwardProp: (prop) => prop !== 'open',
+      })(({ theme, open }) => ({
+        zIndex: theme.zIndex.drawer + 1,
+        transition: theme.transitions.create(['width', 'margin'], {
+          easing: theme.transitions.easing.sharp,
+          duration: theme.transitions.duration.leavingScreen,
+        }),
+        ...(open && {
+          marginLeft: drawerWidth,
+          width: `calc(100% - ${drawerWidth}px)`,
+          transition: theme.transitions.create(['width', 'margin'], {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
+        }),
+      }));
+      
+      const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+        ({ theme, open }) => ({
+          '& .MuiDrawer-paper': {
+            position: 'relative',
+            whiteSpace: 'nowrap',
+            width: drawerWidth,
+            transition: theme.transitions.create('width', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            boxSizing: 'border-box',
+            ...(!open && {
+              overflowX: 'hidden',
+              transition: theme.transitions.create('width', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+              width: theme.spacing(7),
+              [theme.breakpoints.up('sm')]: {
+                width: theme.spacing(9),
+              },
+            }),
+          },
+        }),
+      );
+      
+      const mdTheme = createTheme();
+      const [open, setOpen] = React.useState(true);
+      const toggleDrawer = () => {
+        setOpen(!open);
+      };
+  
+    return (
+      <div>
+          
+  
+          <AppBar position="absolute" open={open}>
+              
+              <Toolbar
+                sx={{
+                  pr: '24px',backgroundColor:"#111927" 
+                }}
+              >
+                <IconButton
+                  edge="start"
+                  color="inherit"
+                  aria-label="open drawer"
+                  onClick={toggleDrawer}
+                  sx={{
+                    marginRight: '36px',
+                    ...(open && { display: 'none' }),
+                  }}
+                >
+                  <MenuIcon />
+                </IconButton>
+                <Typography
+                  component="h1"
+                  variant="h6"
+                  color="inherit"
+                  noWrap
+                  sx={{ flexGrow: 1 }}
+                >
+                  หน้าหลัก
+                </Typography>
+  
+                {User ? (
+                  <a href='/changeAdmin' style={{textDecoration:'none',color:'#ffffff'}}>
+                  {User.firstname} {User.lastname}
+                  </a>
+                ):
+                <a href='#'>
+                  
+                </a>
+                }
+                
+              </Toolbar>
+            </AppBar>
 
-    
-  return (
-    <div>
          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                 <Grid container spacing={3}>
 
@@ -193,14 +325,6 @@ const edit_home = () => {
                             <input type="color" name="color" defaultValue={val.bgColor} id="color" style={{width:'100%',borderRadius:'3px',padding:'1px'}} onChange={(event)=>{
                             setbgColor(event.target.value)}}/>
                             </Form.Item>
-           
-                            {/* <Form.Item label="RangePicker">
-                            <RangePicker />
-                            </Form.Item> */}
-                           
-                            {/* <Form.Item label="Switch" valuePropName="checked">
-                            <Switch />
-                            </Form.Item> */}
                             
                             <Form.Item label="รูปภาพ SlideShow" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCarousel(e.target.files[0])}>
                             <Upload listType="picture-card" >
@@ -257,7 +381,7 @@ const edit_home = () => {
                             </Upload>
                             
                             </Form.Item>
-                            <Form.Item label="Button">
+                            <Form.Item label="Press">
                             <Button onClick={addCard}>Submit</Button>
                             </Form.Item>                           
                         </Form>
@@ -287,7 +411,7 @@ const edit_home = () => {
 
                   <Grid item xs={12}>
                     <Paper sx={{ p: 4,display:'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'2rem 0rem',height:'90%'}}>
-                      
+                    <h4>รูปภาพ slide show</h4>
                         <ListCarousel />
                       
                     </Paper>

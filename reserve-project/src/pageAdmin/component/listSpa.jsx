@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Tab1 } from './styled';
 import { Button,Select,Space, Modal,Form,Input,Upload,Table,Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
+import swal from 'sweetalert';
 import Axios from 'axios'
 
 const listSpa = () => {
@@ -30,12 +30,18 @@ const listSpa = () => {
   const editRoom = (id) =>{
 
     Axios.put(`http://localhost:3000/Edit/spa/${id}`,{
-      room_name:room_name,
-      detail:detail,
-      service:service,
+      room_name:room_name || selectedCard.room_name,
+      detail:detail || selectedCard.detail,
+      service:service.length > 0 ? service : selectedCard.service,
     })
     .then(function (response) {
         console.log(response);
+        swal({
+          title:"Changed Success",
+          icon:"success",
+          button:'OK'
+        }).then(function(){
+          location.reload();})
         })
     .catch(er => console.log(er))
 
@@ -46,6 +52,12 @@ const listSpa = () => {
     )
     .then(function (response) {
           console.log(response);
+          swal({
+            title:"Changed Success",
+            icon:"success",
+            button:'OK'
+          }).then(function(){
+            location.reload();})
         })
     .catch(er => console.log(er))
   }
@@ -54,8 +66,12 @@ const listSpa = () => {
     const deleteRoom = (id) => {
         Axios.delete(`http://localhost:3000/delete/spa_room/${id}`)
           
-             alert('Delete Success')
-             window.location.reload()
+        swal({
+          title:"Delete Success",
+          icon:"success",
+          button:'OK'
+        }).then(function(){
+          location.reload();})
            
           .catch((error) => {
             console.error(error);
@@ -147,11 +163,11 @@ const listSpa = () => {
                     }}
                 >   
                     <Form.Item label="Name">
-                    <Input placeholder={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
+                    <Input defaultValue={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
                     </Form.Item>         
 
                     <Form.Item label="Detail">
-                    <Input placeholder={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
+                    <Input defaultValue={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
                     </Form.Item>
                     
                     <Form.Item label="บริการ">

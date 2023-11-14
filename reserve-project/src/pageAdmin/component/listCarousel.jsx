@@ -2,7 +2,7 @@ import React, { useState,useEffect  } from 'react'
 import { Tab1,Button1 } from './styled';
 import { Table, Button } from 'antd';
 import Image from 'react-bootstrap/Image';
-
+import swal from 'sweetalert';
 import Axios from 'axios'
 const listCarousel = () => {
 
@@ -17,8 +17,12 @@ const listCarousel = () => {
     const deleteCarousel = (id) => {
         Axios.delete(`http://localhost:3000/delete_carousel/${id}`)
           
-             alert('Delete Success')
-             window.location.reload()
+        swal({
+          title:"Delete Success",
+          icon:"success",
+          button:'OK'
+        }).then(function(){
+          location.reload();})
            
           .catch((error) => {
             console.error(error);

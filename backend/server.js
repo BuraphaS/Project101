@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const cors = require('cors')
 
+const fs = require('fs')
 const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
 const bcrypt = require('bcrypt')
@@ -9,7 +10,7 @@ const jwt = require('jsonwebtoken');
 const saltRounds = 10
 const multer = require('multer')
 
-const secret = 'Lionel'
+const secret = "Lionel";
 const verifyToken = require('./middleware/auth')
 
 
@@ -19,6 +20,7 @@ app.use(setUser)
 app.use(express.static('public'))
 
 const mysql = require('mysql2')
+const { log } = require('console')
 const connection = mysql.createConnection({
     host:'localhost',
     user: 'root',
@@ -35,8 +37,28 @@ const storage = multer.diskStorage({
 })
 const upload = multer({storage})
 
+app.get('/info_user',jsonParser,(req,res)=>{
+  connection.query('SELECT * FROM info_user;',(err,result)=>{
+   if(err){
+       console.log(err);
+   }else{
+       res.send(result)
+   }
+  })
+})
+app.get('/info_user/:id',jsonParser,(req,res)=>{
+  connection.query('SELECT * FROM info_user WHERE id=?;',[req.params.id],(err,result)=>{
+   if(err){
+       console.log(err);
+   }else{
+       res.send(result)
+   }
+  })
+})
+
+
 app.get('/user',jsonParser,(req,res)=>{
-    connection.query('SELECT *,info_user.id FROM info_user,role WHERE info_user.role_id = role.id;',(err,result)=>{
+    connection.query('SELECT * FROM info_user;',(err,result)=>{
      if(err){
          console.log(err);
      }else{
@@ -44,21 +66,71 @@ app.get('/user',jsonParser,(req,res)=>{
      }
     })
  })
-app.post('/register',jsonParser,(req,res,next)=>{
-    bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
-        connection.query(
-            'INSERT INTO info_user(email,username,firstname,lastname,phone,password,role_id) VALUES(?, ?, ?, ?, ?, ?,2)',
-            [req.body.email,req.body.username,req.body.firstname,req.body.lastname,req.body.phone,hash],
-            function(err, results, fields) {
-            if(err){
-                res.json({status:'error',message:err})
-                return
-            }
-            res.json({status:'ok'})
-            }
-        );
-    });   
-})
+
+ app.get('/reserve',jsonParser,(req,res)=>{
+  connection.query('SELECT * FROM reserve;',(err,result)=>{
+    if(err){
+      console.log(err);
+    }else{
+        res.send(result)
+    }
+  })
+ })
+
+app.post('/reserve', jsonParser, (req, res, next) => {
+  const id_room = req.body.id_room;
+  const id_user = req.body.id_user;
+  const date_start = req.body.date_start;
+  const date_end = req.body.date_end;
+  const num_guests = req.body.num_guests;
+  const status = req.body.status;
+
+  connection.query(
+    'INSERT INTO reserve(id_room, id_user, date_start, date_end, num_guests, status) VALUES (?, ?, ?, ?, ?, 0)',
+    [id_room,id_user,date_start,date_end,num_guests,status],
+    function(err, results, fields) {
+      if (err) {
+        res.json({ status: 'error', message: err });
+        return;
+      }
+      res.json({ status: 'ok' });
+    }
+  );
+});
+
+ app.post('/register', jsonParser, (req, res, next) => {
+  // Check if email or username already exists
+  connection.query(
+      'SELECT * FROM info_user WHERE email = ? OR username = ?',
+      [req.body.email, req.body.username],
+      function (err, results, fields) {
+          if (err) {
+              res.json({ status: 'error', message: err });
+              return;
+          }
+
+          if (results.length > 0) {
+              // Email or username already exists
+              res.json({ status: 'error', message: 'Email or username already exists' });
+          } else {
+              // Proceed with registration
+              bcrypt.hash(req.body.password, saltRounds, function (err, hash) {
+                  connection.query(
+                      'INSERT INTO info_user(email,username,firstname,lastname,phone,password,role_id) VALUES(?, ?, ?, ?, ?, ?,2)',
+                      [req.body.email, req.body.username, req.body.firstname, req.body.lastname, req.body.phone, hash],
+                      function (err, results, fields) {
+                          if (err) {
+                              res.json({ status: 'error', message: err });
+                              return;
+                          }
+                          res.json({ status: 'ok' });
+                      }
+                  );
+              });
+          }
+      }
+  );
+});
 
 app.post('/login',jsonParser,(req,res,next)=>{
    
@@ -77,8 +149,8 @@ app.post('/login',jsonParser,(req,res,next)=>{
         
         bcrypt.compare(req.body.password,info_user[0].password, function(err, isMatch) {
            if(isMatch){
-            var token = jwt.sign({ email: info_user[0].email ,username: info_user[0].username ,role:info_user[0].role,firstname:info_user[0].firstname,lastname:info_user[0].lastname,phone:info_user[0].phone,id:info_user[0].id},secret,{ expiresIn: '2h' });
-            res.json({status:'ok',message:'Login Success',token, user: info_user[0] })
+            var token = jwt.sign({ id: info_user[0].id,email: info_user[0].email,username: info_user[0].username,firstname: info_user[0].firstname,lastname: info_user[0].lastname,phone: info_user[0].phone, role_id: info_user[0].role_id,role: info_user[0].role},secret,{ expiresIn: '2h' });
+            res.json({status:'ok',message:'Login Success',token, id: info_user[0].id,role_id: info_user[0].role_id })
             
            }else{
             res.json({status:'error',message:'Login Failed'})
@@ -91,14 +163,45 @@ app.post('/login',jsonParser,(req,res,next)=>{
     
 })
 
-app.post('/userlog',verifyToken, (req, res) => {
-    try {
-      const user = req.user;
-      res.json({ status: 'ok', user });
-    } catch (err) {
-      res.json({ status: 'error', message: err.message });
-    }
-  });
+app.get('/userlog',verifyToken, (req, res) => {
+  try {
+    const user = req.user;
+    res.json({ status: 'ok', user });
+    console.log(user);
+  } catch (err) {
+    res.json({ status: 'error', message: err.message });
+  }
+});
+
+app.get('/infolog', verifyToken, (req, res) => {
+  try {
+    const user = req.user;
+
+    // เชื่อมต่อกับฐานข้อมูลหรือใช้ ORM ของคุณเพื่อดึงข้อมูลจากตารางอื่น ๆ
+    // ตัวอย่างของการใช้ SQL:
+    const sql = 'SELECT * FROM info_user WHERE id = ?'; // ตั้งค่าคำสั่ง SQL ให้ตรงกับโครงสร้างของฐานข้อมูลของคุณ
+    db.query(sql, [user.id], (error, results) => {
+      if (error) {
+        res.json({ status: 'error', message: error.message });
+      } else {
+        // นี่คือผลลัพธ์จากการเปรียบเทียบ ID กับตารางอื่น
+        res.json({ status: 'ok', user, otherData: results });
+      }
+    });
+  } catch (err) {
+    res.json({ status: 'error', message: err.message });
+  }
+});
+
+app.get('/role',(req,res)=>{
+  connection.query('SELECT * FROM role',(err,result)=>{
+   if(err){
+       console.log(err);
+   }else{
+       res.send(result)
+   }
+  })
+})
   app.post('/role',jsonParser,(req,res,next)=>{
     connection.query(
         'INSERT INTO role(role) VALUE(?)',
@@ -330,20 +433,15 @@ app.get('/spa',(req,res)=>{
     })
  })
 
-app.post('/home',jsonParser,(req,res,next)=>{
+app.put('/home',jsonParser,(req,res,next)=>{
     const navColor = req.body.navColor;
     const navName = req.body.navName;
     const bgColor = req.body.bgColor;
 
-
-    if (!navColor && !navName && !bgColor) {
-        res.json({ status: 'ok' });
-        return;
-      }
     connection.query(
         'UPDATE home SET navColor = ?, navName = ?, bgColor = ?',
         [navColor,navName,bgColor],
-        function(err, results, fields) {
+        (err, results, fields) => {
             if(err){
                 res.json({status:'error',message:err})
                 return
@@ -354,7 +452,6 @@ app.post('/home',jsonParser,(req,res,next)=>{
 })
 
 app.put('/cardEdit/:id', jsonParser,(req, res,next) => {
-    // const file = req.file.filename;
     const title = req.body.title;
     const detail = req.body.detail;
     const id = req.params.id;
@@ -506,13 +603,24 @@ function setUser(req,res,next){
   });
 
   app.delete('/delete_carousel/:id', (req, res) => { 
-    connection.query("DELETE FROM home_carousel WHERE id = ?",[req.params.id] ,(err, result) => {
-      if (err){
-        console.log(err);
-      } else{
-        res.json({ status: 'ok'});
-      }      
-    });
+    connection.query("SELECT file_name FROM home_carousel WHERE id = ?",[req.params.id],(err,result)=>{
+      connection.query("DELETE FROM home_carousel WHERE id = ?",[req.params.id] ,(err, result2) => {
+        if (err){
+          console.log(err);
+          return
+        } else{
+     
+          fs.unlink('./public/img/'+result[0].file_name,(err)=>{
+            if(err){
+              console.log(err);
+              return
+            }
+          });
+          res.json({ status: 'ok'});
+
+        }      
+      });
+    })
   });
 
   app.delete('/delete/room_facilities/:id', (req, res) => { 
@@ -612,8 +720,63 @@ function setUser(req,res,next){
         res.json({ status: 'error', message: err.message });
       } else {
         res.json({ status: 'ok', message: 'Success' });
+        console.log(req);
       }
     });
+  });
+
+  app.put('/Edit/role/:id', jsonParser,(req, res,next) => {
+
+    // const role_id = req.body.role_id;
+    const role = req.body.role;
+    const id = req.params.id;
+
+    connection.query('UPDATE info_user SET role = ? WHERE id = ? ;', [role, id], (err, result) => {
+      if (err) {
+        res.json({ status: 'error', message: err.message });
+      } else {
+        res.json({ status: 'ok', message: 'Success' });
+        console.log(req);
+      }
+    });
+  });
+
+  app.put('/reset/password/:id', jsonParser,(req, res,next) => {
+
+    const id = req.params.id;
+    bcrypt.hash(req.body.password, saltRounds, function (err, hash){
+      connection.query('UPDATE info_user SET password = ?  WHERE id = ? ;', [hash,id], (err, result) => {
+      if (err) {
+        res.json({ status: 'error', message: err.message });
+      } else {
+        res.json({ status: 'ok', message: 'Success' });
+        console.log(req);
+      }
+    });
+  })
+    });
+    
+  
+
+  app.put('/Edit/userlog/:id', jsonParser,(req, res,next) => {
+
+    const email = req.body.email;
+    const username = req.body.username;
+    const firstname = req.body.firstname;
+    const lastname = req.body.lastname;
+    const phone = req.body.phone;
+    const id = req.params.id;
+    bcrypt.hash(req.body.password, saltRounds, function (err, hash){
+      connection.query('UPDATE info_user SET email = ? ,username = ? ,firstname = ?,lastname = ?,phone = ?,password = ?  WHERE id = ? ;', [email, username,firstname,lastname,phone,hash,id], (err, result) => {
+      if (err) {
+        res.json({ status: 'error', message: err.message });
+      } else {
+        res.json({ status: 'ok', message: 'Success' });
+        console.log(req);
+      }
+    });
+    })
+    
   });
 
 app.put('/ImgEdit/Room/:id', upload.single('file'), jsonParser, (req, res, next) => {

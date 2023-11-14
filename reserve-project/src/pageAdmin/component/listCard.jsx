@@ -1,6 +1,5 @@
 import React, { useState,useEffect  } from 'react'
-import { Tab1 } from './styled';
-
+import swal from 'sweetalert';
 import { Button, Modal,Form,Input,Upload,Table,Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
@@ -27,9 +26,12 @@ const listCard = () => {
     const deleteCard = (id) => {
         Axios.delete(`http://localhost:3000/delete_card/${id}`)
           
-             alert('Delete Success')
-             window.location.reload()
-           
+        swal({
+          title:"Delete Success",
+          icon:"success",
+          button:'OK'
+        }).then(function(){
+          location.reload();})
           .catch((error) => {
             console.error(error);
           });
@@ -48,11 +50,17 @@ const listCard = () => {
     const setCard = (id) =>{
 
         Axios.put(`http://localhost:3000/cardEdit/${id}`,{
-            title:title,
-            detail:detail
+            title:title||selectedCard.title,
+            detail:detail||selectedCard.detail,
         })
         .then(function (response) {
             console.log(response);
+            swal({
+              title:"Changed Success",
+              icon:"success",
+              button:'OK'
+            }).then(function(){
+              location.reload();})
             })
         .catch(er => console.log(er))
 
@@ -63,6 +71,12 @@ const listCard = () => {
         )
         .then(function (response) {
               console.log(response);
+              swal({
+                title:"Edit Picture Success",
+                icon:"success",
+                button:'OK'
+              }).then(function(){
+                location.reload();})
             })
         .catch(er => console.log(er))
       }
@@ -144,10 +158,10 @@ const listCard = () => {
                   >
                     
                     <Form.Item label="Title">
-                      <Input placeholder={selectedCard.title}  onChange={(event) => { setTitle(event.target.value) }} />
+                      <Input defaultValue={selectedCard.title}  onChange={(event) => { setTitle(event.target.value) }} />
                     </Form.Item>
                     <Form.Item label="Detail">
-                      <TextArea rows={4} placeholder={selectedCard.detail} onChange={(event) => { setDetail(event.target.value) }}/>
+                      <TextArea rows={4} defaultValue={selectedCard.detail} onChange={(event) => { setDetail(event.target.value) }}/>
                     </Form.Item>
                     <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setImg(e.target.files[0])}>
                       <Upload listType="picture-card" >

@@ -18,6 +18,14 @@ const listRoom = () => {
 
     const [facilities1,getFacilities] = useState([])
     
+    // const [roomData,setForm] = useState({
+    //   room_name:'',
+    //   detail:'',
+    //   bed_type:'',
+    //   price:'',
+    //   quantity:'',
+    //   facilities:'',
+    // })
     const handleChange = (selectedValues) => {
       setSelectedFacilities(selectedValues);
     console.log(`selected ${selectedValues}`);
@@ -30,18 +38,20 @@ const listRoom = () => {
     })
     }
     
+ 
   const editRoom = (id) =>{
-
+ 
     Axios.put(`http://localhost:3000/Edit/Room/${id}`,{
-      room_name:room_name,
-      bed_type:bed_type,
-      detail:detail,
-      price:price,
-      quantity:quantity,
-      facilities:facilities,
+      room_name: room_name || selectedCard.room_name,
+      bed_type: bed_type || selectedCard.bed_type,
+      detail: detail || selectedCard.detail,
+      price: price || selectedCard.price,
+      quantity: quantity || selectedCard.quantity,
+      facilities: facilities.length > 0 ? facilities : selectedCard.facilities,
     })
     .then(function (response) {
-        console.log(response);
+      console.log(response);
+      window.location.reload()
         })
     .catch(er => console.log(er))
 
@@ -68,7 +78,7 @@ const listRoom = () => {
           });
       };
 
-    const getRoom = () =>{
+    const getRoom = async () =>{
         Axios.get('http://localhost:3000/room')
         .then (res => {
           setRoom(res.data)
@@ -154,30 +164,27 @@ const listRoom = () => {
                             }}
                         >   
                             <Form.Item label="Name">
-                            <Input placeholder={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
                             </Form.Item>         
 
                             <Form.Item label="ขนาดของห้อง">
-                            <Input placeholder={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
                             </Form.Item>
 
                             <Form.Item label="ลักษณะของเตียง">
-                            <Input placeholder={selectedCard.bed_type} onChange={(event)=>{setBedType(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.bed_type} onChange={(event)=>{setBedType(event.target.value)}}/>
                             </Form.Item>  
 
                             <Form.Item label="จำนวนคน">
-                            <Input placeholder={selectedCard.quantity} onChange={(event)=>{setquantity(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.quantity} onChange={(event)=>{setquantity(event.target.value)}}/>
                             </Form.Item>   
 
                             <Form.Item label="Price">
-                            <Input placeholder={selectedCard.price} onChange={(event)=>{setPrice(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.price} onChange={(event)=>{setPrice(event.target.value)}}/>
                             </Form.Item>   
-
                           
                             <Form.Item label="สิ่งอำนวยความสะดวก">
-                           
-                            {/* <Input onChange={(event)=>{setFacilities_id(event.target.value)}}/> */}
-                           
+                                                     
                             <Select
                             mode="multiple"
                             style={{

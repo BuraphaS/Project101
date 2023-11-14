@@ -1,29 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import RoomsCard from '../component/rooms/RoomsCard'
 import MeetingCard from '../component/rooms/MeetingCard'
+import Gym from '../component/rooms/Gym';
 import {
   Button,
-  Cascader,
-  Checkbox,
   DatePicker,
   Form,
   Input,
   InputNumber,
-  Radio,
-  Select,
-  Slider,
-  Switch,
-  TreeSelect,
-  Upload,
+  FloatButton
 } from 'antd';
+import Aos from 'aos'
+import 'aos/dist/aos.css'
+import Spa from '../component/rooms/Spa';
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const roomPage = () => {
-  
+  useEffect(()=>{
+    Aos.init();
+  },[]);
   return (
-    <div>
+    <div id='room' style={{paddingTop:'1rem'}}> 
         <h1 style={{display:'flex',textAlign:'center',width:'100%',marginTop:'5rem', justifyContent:'center'}}>
             ห้องพัก
         </h1>
@@ -57,18 +56,39 @@ const roomPage = () => {
         <div style={{width:'100%',margin:'1rem',}}>
           <RoomsCard />
         </div>
-</div>
-      
-         
-          
-      
+</div>     
         
-       
-        <h1 style={{display:'flex',textAlign:'center',width:'100%',marginTop:'5rem', justifyContent:'center'}}>
+       <div data-aos="fade-up" id='meeting'  style={{paddingTop:'1rem',backgroundColor:'#F4EAE0'}}>
+        <h1 style={{display:'flex',textAlign:'center',width:'100%',marginTop:'5rem',marginBottom:'1rem', justifyContent:'center'}}>
           ห้องประชุม
         </h1>
-        <MeetingCard/>
+        <div>
+          <MeetingCard/>
+        </div>
+       </div>
+        
+      <div  id='gym' style={{paddingTop:'1rem'}}>
+        <h1 style={{display:'flex',textAlign:'center',width:'100%',marginTop:'5rem',marginBottom:'5rem', justifyContent:'center'}}>
+          ห้องออกกำลังกาย
+        </h1>
+        <div>
+          <Gym/>
+        </div>
+      </div>
+        
+      <div id='spa' style={{paddingTop:'1rem',backgroundColor:'#F4EAE0'}}>
+        <h1 style={{display:'flex',textAlign:'center',width:'100%',marginTop:'5rem', justifyContent:'center'}}>
+                ห้องสปา
+              </h1>
+              <div id='meeting'>
+                <Spa/>
+              </div>
+      </div>
+        
+        
+        <FloatButton.BackTop />
     </div>
+    
   )
 }
 

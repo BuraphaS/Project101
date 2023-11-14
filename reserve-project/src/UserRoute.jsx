@@ -18,6 +18,8 @@ import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container1 from '@mui/material/Container';
+
+import swal from 'sweetalert'
 import Axios from 'axios'
 
 
@@ -28,6 +30,7 @@ const UserRoute = ({children}) => {
   const [lastname, setLastname] = useState("");
   const [phone, setPhone] = useState(0);
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
 
   const [showLogin, setShowLogin] = useState(false);
@@ -53,25 +56,45 @@ const UserRoute = ({children}) => {
       getHome();
     }, []);
 
-    const addRegister = () =>{
-      Axios.post('http://localhost:3000/register',{
-        email: email,
-        username: username,
-        firstname: firstname,
-        lastname: lastname,
-        phone: phone,
-        password: password
-      }) 
-      .then(function (response) {
-        console.log(response);
-        alert('Register Success')
-         window.location.reload()
-      })
-      
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
+    const handleRegistration = async () => {
+      try {
+        const response = await Axios.post('http://localhost:3000/register', {
+          email,
+          username,
+          firstname,
+          lastname,
+          phone,
+          password,
+        });
+    
+        if (response.data.status === 'ok') {
+          swal({
+            title: 'Register Success',
+            icon: 'success',
+            button: 'OK',
+          });
+    
+          handleCloseRegister();
+        } else {
+          swal({
+            title: 'Already have an account',
+            text: 'Please try again',
+            icon: 'error',
+            button: 'OK',
+          });
+        }
+      } catch (error) {
+        console.error('Error during registration:', error);
+        // Handle error, show appropriate message to the user
+        swal({
+          title: 'Error',
+          text: 'Something went wrong. Please try again later.',
+          icon: 'error',
+          button: 'OK',
+        });
+      }
+    };
+  
 
 
     const navigate = useNavigate();
@@ -95,12 +118,26 @@ const UserRoute = ({children}) => {
               .then (data =>{
                  if(data.status == 'ok'){
                   localStorage.setItem('token',data.token)
-                  alert('Login Success')
-                  navigate('/dashboard');
-                  window.location.reload()
+                  swal({
+                    title:"Login Success",
+                    icon:"success",
+                    button:'OK'
+                  })
+                  .then(function(){
+                    location.reload();
+                  })
+                  navigate('/1');
+                  
                   
                  }else{
-                  alert('Something Wrong Please Try Again')
+                  console.log(data);
+                  swal({
+                    title:"Something Wrong",
+                    text:"Please Try Again",
+                    icon:"error",
+                    button:'OK'
+                  })
+                 
                  }
               })
               .catch((error) => {
@@ -132,15 +169,13 @@ const UserRoute = ({children}) => {
                 <Nav className="justify-content-end flex-grow-1 pe-5">
                 <Nav.Link href="/">HOME</Nav.Link>
                 <NavDropdown title="ROOMS" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/roomPage">Room</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
+              <NavDropdown.Item href="/roomPage#room">Room</NavDropdown.Item>
+              <NavDropdown.Item href="/roomPage#meeting">
+                Meeting Room
               </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
+              <NavDropdown.Item href="/roomPage#gym">Gym</NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
+              <NavDropdown.Item href="/roomPage#spa">Spa</NavDropdown.Item>
             </NavDropdown>
                 <Nav.Link href="#" onClick={handleShowRegister} >REGISTER</Nav.Link>
                 <Nav.Link href="#" onClick={handleShowLogin} >LOGIN</Nav.Link>
@@ -237,6 +272,7 @@ const UserRoute = ({children}) => {
               name="email"
               autoComplete="email"
               autoFocus
+              error={email.trim() === ""}
               onChange={(event)=>{setEmail(event.target.value)}}
             />
             <TextField
@@ -248,6 +284,7 @@ const UserRoute = ({children}) => {
               type="username"
               id="username"
               autoComplete="username"
+              error={username.trim() === ""}
               onChange={(event)=>{setUsername(event.target.value)}}
             />
             <TextField
@@ -259,6 +296,7 @@ const UserRoute = ({children}) => {
               type="firstname"
               id="firstname"
               autoComplete="firstname"
+              error={firstname.trim() === ""}
               onChange={(event)=>{setFirstname(event.target.value)}}
             />
             <TextField
@@ -270,6 +308,7 @@ const UserRoute = ({children}) => {
               type="lastname"
               id="lastname"
               autoComplete="lastname"
+              error={lastname.trim() === ""}
               onChange={(event)=>{setLastname(event.target.value)}}
             />
             <TextField
@@ -281,6 +320,7 @@ const UserRoute = ({children}) => {
               type="phone"
               id="phone"
               autoComplete="phone"
+              error={lastname.trim() === ""}
               onChange={(event)=>{setPhone(event.target.value)}}
             />
             <TextField
@@ -292,44 +332,36 @@ const UserRoute = ({children}) => {
               type="password"
               id="password"
               autoComplete="current-password"
+              error={password.trim() === "" || password.length < 8}
+              helperText={
+                password.trim() === ""
+                  ? "Password is required"
+                  : password.length < 8
+                  ? "Password must be at least 8 characters"
+                  : ""
+              }
               onChange={(event)=>{setPassword(event.target.value)}}
             />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="confirmPassword"
+              error={confirmPassword.trim() !== password.trim()}
+              helperText={
+                confirmPassword.trim() !== password.trim()
+                  ? "Passwords do not match"
+                  : ""
+              }
+              onChange={(event) => { setConfirmPassword(event.target.value) }}
+            />
           </Box>
-
-
-          {/* <Form>
-            <Form.Group className="mb-3" controlId="formGroupEmail">
-              <Form.Label>Email</Form.Label>
-              <Form.Control type="email" placeholder="Enter Email" onChange={(event)=>{setEmail(event.target.value)}}/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupUsername">
-              <Form.Label>Username</Form.Label>
-              <Form.Control type="text" placeholder="Enter Username" onChange={(event)=>{setUsername(event.target.value)}}/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupFirstname">
-              <Form.Label>Firstname</Form.Label>
-              <Form.Control type="text" placeholder="Enter Firstname" onChange={(event)=>{setFirstname(event.target.value)}}/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupLastname">
-              <Form.Label>Lastname</Form.Label>
-              <Form.Control type="text" placeholder="Enter Lastname" onChange={(event)=>{setLastname(event.target.value)}}/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupPhone">
-              <Form.Label>Phone</Form.Label>
-              <Form.Control type="number" placeholder="Enter Phone." onChange={(event)=>{setPhone(event.target.value)}} />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" onChange={(event)=>{setPassword(event.target.value)}}/>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="formGroupConfirmPassword">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-          </Form> */}
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={addRegister}>Confirm</Button>
+          <Button variant="primary" onClick={handleRegistration}>Confirm</Button>
         </Modal.Footer>
       </Modal>
     </div>

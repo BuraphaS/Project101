@@ -1,19 +1,16 @@
-GET http://localhost:3000/user
-content-type: application/json
+GET http://localhost:3000/infolog
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzUsImVtYWlsIjoidGVzdEAxMjMiLCJ1c2VybmFtZSI6InRlc3QiLCJmaXJzdG5hbWUiOiJ0ZXN0IiwibGFzdG5hbWUiOiJ0ZXN0IiwicGhvbmUiOjEyMywicm9sZV9pZCI6MSwicm9sZSI6IkFkbWluIiwiaWF0IjoxNjk5ODY4ODA2LCJleHAiOjE2OTk4NzYwMDZ9.fSh4UWgg6N8WZnrJFy7Sz46t4t0HFxXM3b0ZXrn_dpY
 
-{
-    
-}
 ###
 POST http://localhost:3000/register
 content-type: application/json
 
 {
     
-    "email":"test@123",
-    "username":"test",
+    "email":"Test456@gmail.com",
+    "username":"Test45678",
     "firstname":"test",
-    "lastname":"test",
+    "lastname":"45678",
     "phone":"123",
     "password":"123"
 }
@@ -23,9 +20,8 @@ content-type: application/json
 
 {
     
-    
-    "username":"test",
-    "password":"123"
+    "username":"gggg",
+    "password":""
 }
 ###
 POST http://localhost:3000/payment
@@ -57,36 +53,36 @@ content-type: application/json
 }
 
 ###
-POST http://localhost:3000/homecard
+GET http://localhost:3000/info_user
 content-type: application/json
 
 {
     
     
-    "file_name":"1696355246365_Img (2).png",
-    "title":"tttw",
-    "detail":"rrrrr"
+
     
 }
 
 ###
-PUT  http://localhost:3000/Edit/spa/1
+PUT  http://localhost:3000/reset/password/55
 content-type: application/json
 
 {
-    
-   
-    "room_name":"สปา 1",
-    "detail":"เปิด 08.00 - 12.00",
-    "service":""
+    "password":"ss"
 }
 
 ###
-POST http://localhost:3000/userlog
+POST http://localhost:3000/reserve
 Content-Type: application/json
 
  {
-    "token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAMTIzIiwidXNlcm5hbWUiOiJ0ZXN0IiwiZmlyc3RuYW1lIjoidGVzdCIsImxhc3RuYW1lIjoidGVzdCIsInBob25lIjoxMjMsImlkIjoyNSwiaWF0IjoxNjk3NDcwOTMyLCJleHAiOjE2OTc0NzgxMzJ9.7qXdwaAjIK2bel7djPUAljU_XB7eRPY2_XRpW04I_Ps"
+
+    "id_room":"2",
+    "id_user":"3",
+    "date_start":"1232132",
+    "date_end":"12.00",
+    "num_guests":"5",
+    "status":""
 }
 
 ###
