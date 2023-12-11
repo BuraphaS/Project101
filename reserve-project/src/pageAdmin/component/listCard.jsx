@@ -101,25 +101,18 @@ const listCard = () => {
           
           const columns = [
             {
-              title: 'Picture',
+              title: 'รูปภาพ',
               dataIndex: 'picture',
               width:'50%',
             },
             {
-              title: 'Name',
+              title: 'ชื่อ',
               dataIndex: 'name',
               width:'100%',
               render: (text) => <h5>{text}</h5>,
             },
-            // {
-            //   title: 'Detail',
-            //   dataIndex: 'detail',
-            //   width:'5%',
-            //   render: (text) => <p>{text}</p>,
-              
-            // },
             {
-              title: 'Edit / Delete',
+              title: 'แก้ไข / ลบ',
               dataIndex: 'edit',
               align:'center'
             },
@@ -130,8 +123,8 @@ const listCard = () => {
             name: val.title,
             // detail: val.detail,
             edit: <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
-                  <Button style={{marginRight:'0.5rem'}} type='primary' onClick={() => showModal(val)}>Edit</Button>
-                  <Button type='primary' danger onClick={() => deleteCard(val.id)}>Delete</Button> 
+                  <Button style={{marginRight:'0.5rem'}} type='primary' onClick={() => showModal(val)}>แก้ไข</Button>
+                  <Button type='primary' danger onClick={() => deleteCard(val.id)}>ลบ</Button> 
                   </div>,
           }));
 
@@ -157,17 +150,17 @@ const listCard = () => {
                     }}
                   >
                     
-                    <Form.Item label="Title">
+                    <Form.Item label="ชื่อ">
                       <Input defaultValue={selectedCard.title}  onChange={(event) => { setTitle(event.target.value) }} />
                     </Form.Item>
-                    <Form.Item label="Detail">
+                    <Form.Item label="รายละเอียด">
                       <TextArea rows={4} defaultValue={selectedCard.detail} onChange={(event) => { setDetail(event.target.value) }}/>
                     </Form.Item>
-                    <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setImg(e.target.files[0])}>
+                    <Form.Item label="รูปภาพ" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setImg(e.target.files[0])}>
                       <Upload listType="picture-card" >
                         <div>
                           <PlusOutlined />
-                          <div style={{ marginTop: 8 }}>Upload</div>
+                          <div style={{ marginTop: 8 }}>รูปภาพ</div>
                         </div>
                       </Upload>
                     </Form.Item>

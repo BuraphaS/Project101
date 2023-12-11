@@ -36,11 +36,11 @@ const listCarousel = () => {
 
     const columns = [
         {
-          title: 'Picture',
+          title: 'รูปภาพ',
           dataIndex: 'picture',
         },
         {
-          title: 'Delete',
+          title: 'ลบ',
           dataIndex: 'edit',
           align:'center'
         },
@@ -48,7 +48,7 @@ const listCarousel = () => {
       const data = Carousel.map((val, index) => ({
         key: index.toString(),
         picture: <Image className='w-50' src={`http://localhost:3000/img/${val.file_name}`} rounded />,
-        edit:   <Button type='primary' danger onClick={() => deleteCarousel(val.id)}>Delete</Button>
+        edit:   <Button type='primary' danger onClick={() => deleteCarousel(val.id)}>ลบ</Button>
       }));
 
 

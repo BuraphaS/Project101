@@ -22,6 +22,7 @@ import UserRoute from './UserRoute';
 import User2 from './User2'
 import ChangeInfo from './pageUser/ChangeInfo';
 import ChangeInfoAdmin from './pageAdmin/ChangeInfoAdmin';
+import ReserveReport from './pageUser/ReserveReport';
 function App() {
 
 
@@ -69,6 +70,8 @@ function App() {
                 <>
                     <Route path="/1" element={<Navigate to="/" />} />
                     <Route path="/roomPage1" element={<Navigate to="/" />} />
+                    <Route path="/change" element={<Navigate to="/" />} />
+                    <Route path="/reserve" element={<Navigate to="/" />} />
                     <Route path="/dashboard" element={<Navigate to="/" />} />
                     <Route path="/edit_home" element={<Navigate to="/" />} />
                     <Route path="/edit_payment" element={<Navigate to="/" />} />
@@ -108,6 +111,11 @@ function App() {
                       <Route path="/change" element={
                         <User2>
                           <ChangeInfo />
+                        </User2>
+                      } />
+                      <Route path="/reserve" element={
+                        <User2>
+                          <ReserveReport />
                         </User2>
                       } />
                     </>

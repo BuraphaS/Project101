@@ -179,7 +179,7 @@ const dashboard = () => {
                 noWrap
                 sx={{ flexGrow: 1 }}
               >
-                Dashboard
+                แดชบอร์ด
               </Typography>
               {User ? (
                 <a href='/changeAdmin' style={{textDecoration:'none',color:'#ffffff'}}>

@@ -17,7 +17,7 @@ const secondaryListItems = () => {
         localStorage.removeItem('token');
       
         swal({
-          title:"Login Success",
+          title:"ออกจากระบบ",
           icon:"success",
           button:'OK'
         }).then(function(){

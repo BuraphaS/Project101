@@ -32,7 +32,7 @@ const mainListItems = () => {
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
-        <ListItemText primary="Dashboard" />
+        <ListItemText primary="แดชบอร์ด" />
       </ListItemButton>
       </Link>
 
@@ -61,7 +61,7 @@ const mainListItems = () => {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ข้อมูลห้องพัก" />
+            <ListItemText primary="ห้องพัก" />
           </ListItemButton>
         </Link>
         
@@ -70,7 +70,7 @@ const mainListItems = () => {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ข้อมูลห้องประชุม" />
+            <ListItemText primary="ห้องประชุม" />
           </ListItemButton>
         </Link>
 
@@ -79,7 +79,7 @@ const mainListItems = () => {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ข้อมูลห้อง Gym" />
+            <ListItemText primary="ห้องออกกำลังกาย" />
           </ListItemButton>
         </Link>
 
@@ -88,7 +88,7 @@ const mainListItems = () => {
             <ListItemIcon>
               <StarBorder />
             </ListItemIcon>
-            <ListItemText primary="ข้อมูลห้องสปา" />
+            <ListItemText primary="ห้องสปา" />
           </ListItemButton>
         </Link>
 
@@ -120,7 +120,7 @@ const mainListItems = () => {
         <ListItemIcon>
           <LayersIcon />
         </ListItemIcon>
-        <ListItemText primary="รายงาน" />
+        <ListItemText primary="รายงานการจอง" />
       </ListItemButton>
       </Link>
 

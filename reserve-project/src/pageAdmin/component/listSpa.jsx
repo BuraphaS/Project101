@@ -32,7 +32,7 @@ const listSpa = () => {
     Axios.put(`http://localhost:3000/Edit/spa/${id}`,{
       room_name:room_name || selectedCard.room_name,
       detail:detail || selectedCard.detail,
-      service:service.length > 0 ? service : selectedCard.service,
+      service:service || selectedCard.service,
     })
     .then(function (response) {
         console.log(response);
@@ -111,20 +111,20 @@ const listSpa = () => {
             
         },
     {
-        title: 'Picture',
+        title: 'รูปภาพ',
         dataIndex: 'picture',
         align:'center',
         width:'45%',
     },
     {
-        title: 'Name',
+        title: 'ชื่อ',
         dataIndex: 'name',
         width:'100%',
         render: (text) => <h5>{text}</h5>,
     },
 
     {
-        title: 'Edit / Delete',
+        title: 'แก้ไข / ลบ',
         dataIndex: 'edit',
         align:'center',
     
@@ -137,8 +137,8 @@ const listSpa = () => {
         name: val.room_name,
         // detail: <p style={{width:'5%'}}>{val.detail}</p>,
         edit: <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
-              <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>Edit</Button>
-              <Button type="primary" danger  onClick={() => deleteRoom(val.id)}>Delete</Button> 
+              <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>แก้ไข</Button>
+              <Button type="primary" danger  onClick={() => deleteRoom(val.id)}>ลบ</Button> 
               </div>,
       }));
 
@@ -162,11 +162,11 @@ const listSpa = () => {
                     width:'100%'
                     }}
                 >   
-                    <Form.Item label="Name">
+                    <Form.Item label="ชื่อ">
                     <Input defaultValue={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
                     </Form.Item>         
 
-                    <Form.Item label="Detail">
+                    <Form.Item label="รายละเอียด">
                     <Input defaultValue={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
                     </Form.Item>
                     
@@ -178,7 +178,7 @@ const listSpa = () => {
                          width: '100%',
                        }}
                        placeholder="บริการ"
-                       defaultValue={[]}
+                       defaultValue={selectedCard.service}
                        onChange={handleChange}
                        optionLabelProp="label"
                      >

@@ -48,7 +48,7 @@ const edit_payment = () => {
     .then(function (response) {
           console.log(response);
           swal({
-            title:"Add Payment Success",
+            title:"เพิ่มข้อมูล สำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -67,7 +67,7 @@ const edit_payment = () => {
       Axios.delete(`http://localhost:3000/delete/payment/${id}`)
         
       swal({
-        title:"Delete Success",
+        title:"ลบ สำเร็จ",
         icon:"success",
         button:'OK'
       }).then(function(){
@@ -90,27 +90,27 @@ const edit_payment = () => {
           width:'5%'
       },
       {
-          title: 'Bank',
+          title: 'ธนาคาร',
           dataIndex: 'bank',
           
       },
       {
-        title: 'Number',
+        title: 'เลขบัญชี',
         dataIndex: 'number',
         
     },
     {
-      title: 'Name',
+      title: 'ชื่อ-นามสกุล',
       dataIndex: 'name',
       
    },
    {
-    title: 'Picture',
+    title: 'รูปภาพ',
     dataIndex: 'img',
     width:'25%'
     },
       {
-        title: 'Delete',
+        title: 'แก้ไข / ลบ',
         dataIndex: 'edit',
         align:'center',
         width:'10%'
@@ -126,8 +126,11 @@ const edit_payment = () => {
 
     
       edit: 
-            <Button type='primary' danger onClick={() => deletePayment(val.id)}>Delete</Button> 
-            
+      
+          <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
+            <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>แก้ไข</Button>
+            <Button type="primary" danger  onClick={() => deleteRoom(val.id)}>ลบ</Button> 
+          </div>
     }));
   
   
@@ -196,7 +199,10 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     },
   }),
 );
-
+const onReset = () => {
+  form.resetFields();
+};
+const [form] = Form.useForm();
 const mdTheme = createTheme();
 const [open, setOpen] = React.useState(true);
 const toggleDrawer = () => {
@@ -257,6 +263,7 @@ return (
                   <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
                   <h4 style={{textAlign:'center',marginBottom:'0.5rem'}}>เพิ่มข้อมูลการชำระเงิน</h4>
                   <Form
+                            form={form}
                             labelCol={{
                             span: 6,
                             }}
@@ -265,24 +272,24 @@ return (
                             }}
                             layout="horizontal"
                             style={{
-                            maxWidth:"50%",
-                            width:'50%'
+                            maxWidth:"100%",
+                            width:'100%'
                             }}
                         >  
                         <h5 style={{marginBottom:'2rem',textAlign:'center'}}></h5>
-                            <Form.Item label="ชื่อธนาคาร">
+                            <Form.Item label="ชื่อธนาคาร" name="namebank">
                             <Input onChange={(event)=>{setBank_name(event.target.value)}}/>
                             </Form.Item>
 
-                            <Form.Item label="เลขที่บัญชี">
+                            <Form.Item label="เลขที่บัญชี" name="number">
                             <Input onChange={(event)=>{setAccount_number(event.target.value)}}/>
                             </Form.Item>
 
-                            <Form.Item label="ชื่อเจ้าของบัญชี">
+                            <Form.Item label="ชื่อเจ้าของบัญชี" name="name">
                             <Input onChange={(event)=>{setAccount_name(event.target.value)}}/>
                             </Form.Item>
                             
-                            <Form.Item label="รูปภาพ" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
+                            <Form.Item label="รูปภาพ" name="picture"valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
                             <Upload listType="picture-card" >
                                 <div>
                                 <PlusOutlined />
@@ -298,8 +305,11 @@ return (
                             
                             </Form.Item>
                             
-                            <Button style={{width:'58%',justifyContent:'center',marginLeft:'8.4rem',alignItems:'center',textAlign:'center'}} onClick={addPayment}>Submit</Button>
-                                                    
+                            <Form.Item style={{marginLeft:'60%'}}>
+                            <Button danger onClick={onReset} style={{marginRight:'1rem'}}>รีเซ็ต</Button>
+                            <Button type='primary' onClick={addPayment}>ยืนยัน</Button>
+                            </Form.Item>   
+
                         </Form>
                         
 

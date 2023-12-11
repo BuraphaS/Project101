@@ -119,7 +119,7 @@ const UserRoute = ({children}) => {
                  if(data.status == 'ok'){
                   localStorage.setItem('token',data.token)
                   swal({
-                    title:"Login Success",
+                    title:"เข้าสู่ระบบ",
                     icon:"success",
                     button:'OK'
                   })
@@ -132,8 +132,8 @@ const UserRoute = ({children}) => {
                  }else{
                   console.log(data);
                   swal({
-                    title:"Something Wrong",
-                    text:"Please Try Again",
+                    title:"มีบางอย่างผิดพลาด",
+                    text:"โปรดลองอีกครั้ง",
                     icon:"error",
                     button:'OK'
                   })

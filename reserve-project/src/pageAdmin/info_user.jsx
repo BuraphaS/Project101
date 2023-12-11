@@ -50,7 +50,7 @@ const info_user = () => {
          .then(function (response) {
           console.log(response);
           swal({
-            title:"Changed Role Success",
+            title:"เปลี่ยนบทบาท สำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -69,7 +69,7 @@ const info_user = () => {
          .then(function (response) {
           console.log(response);
           swal({
-            title:"Reset Password",
+            title:"รีเซ็ตรหัสผ่าน",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -90,36 +90,36 @@ const info_user = () => {
       dataIndex: 'id',
     },
     {
-      title: 'Email',
+      title: 'อีเมล',
       dataIndex: 'email',
     },
     {
-      title: 'Username',
+      title: 'ชื่อผู้ใช้',
       dataIndex: 'username',
     },
     {
-      title: 'Firstname',
+      title: 'ชื่อจริง',
       dataIndex: 'firstname',
     },
     {
-      title: 'Lastname',
+      title: 'นามสกุล',
       dataIndex: 'lastname',
     },
     {
-      title: 'Phone',
+      title: 'โทรศัพท์',
       dataIndex: 'phone',
     },
     {
-      title: 'Role',
+      title: 'บทบาท',
       dataIndex: 'role',
     },
     {
-      title: 'Edit',
+      title: 'แก้ไข',
       dataIndex: 'edit',
       align:"center"
     },
     {
-      title: 'Reset Password',
+      title: 'รีเซ็ตรหัสผ่าน',
       dataIndex: 'reset',
       align:"center"
       
@@ -162,9 +162,9 @@ const info_user = () => {
                     ]}
                   >
                   </Select>
-                  <Button type='primary' onClick={() => editRole(val.id)}>Submit</Button>
+                  <Button type='primary' onClick={() => editRole(val.id)}>ยืนยัน</Button>
                   </>,
-      reset:<Button type='primary' danger onClick={() => resetPass(val.id)}>Reset</Button>
+      reset:<Button type='primary' danger onClick={() => resetPass(val.id)}>รีเซ็ต</Button>
   }));
 
   const [User2,setUser2] = useState(null)

@@ -56,7 +56,7 @@ const edit_spa = () => {
         .then(function (response) {
               console.log(response);
               swal({
-                title:"Add Room Success",
+                title:"เพิ่มห้อง สำเร็จ",
                 icon:"success",
                 button:'OK'
               }).then(function(){
@@ -72,7 +72,7 @@ const edit_spa = () => {
         .then(function (response) {
           console.log(response);
           swal({
-            title:"Add Service Success",
+            title:"เพิ่ม สำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -92,7 +92,7 @@ const edit_spa = () => {
             Axios.delete(`http://localhost:3000/delete/spa_service/${id}`)
               
             swal({
-              title:"Delete Success",
+              title:"ลบ สำเร็จ",
               icon:"success",
               button:'OK'
             }).then(function(){
@@ -117,12 +117,12 @@ const edit_spa = () => {
             width:'5%'
         },
         {
-            title: 'Service',
+            title: 'บริการ',
             dataIndex: 'name',
             
         },
         {
-          title: 'Delete',
+          title: 'ลบ',
           dataIndex: 'edit',
           align:'center',
           width:'10%'
@@ -134,7 +134,7 @@ const edit_spa = () => {
         name: val.service,
         // detail: <p style={{width:'5%'}}>{val.detail}</p>,
         edit: 
-              <Button type='primary' danger onClick={() => deleteService(val.id)}>Delete</Button> 
+              <Button type='primary' danger onClick={() => deleteService(val.id)}>ลบ</Button> 
               
       }));
 
@@ -204,7 +204,10 @@ const edit_spa = () => {
       },
     }),
   );
-  
+  const onReset = () => {
+    form.resetFields();
+  };
+  const [form] = Form.useForm();
   const mdTheme = createTheme();
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -264,6 +267,7 @@ return (
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
                     <h4 style={{textAlign:'center',marginBottom:'2rem'}}>เพิ่มข้อมูลห้องสปา</h4>
                     <Form
+                            form={form}
                             labelCol={{
                             span: 4,
                             }}
@@ -276,16 +280,16 @@ return (
                             width:'100%'
                             }}
                         >   
-                            <Form.Item label="Name">
+                            <Form.Item label="ชื่อ" name="name">
                             <Input onChange={(event)=>{setRoom_name(event.target.value)}}/>
                             </Form.Item>          
                            
-                            <Form.Item label="Detail">
+                            <Form.Item label="รายละเอียด" name="detail">
                             <Input onChange={(event)=>{setDetail(event.target.value)}}/>
                             </Form.Item>          
 
                           
-                            <Form.Item label="บริการ">
+                            <Form.Item label="บริการ" name="service">
 
                            
                             <Select
@@ -313,7 +317,7 @@ return (
                             </Form.Item>  
                           
                 
-                            <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
+                            <Form.Item label="รูปภาพ" name="picture" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
                             <Upload listType="picture-card" >
                                 <div>
                                 <PlusOutlined />
@@ -328,9 +332,10 @@ return (
                             </Upload>
                             
                             </Form.Item>
-                            <Form.Item label="Press">
-                            <Button onClick={addRoom}>Submit</Button>
-                            </Form.Item>                           
+                            <Form.Item style={{marginLeft:'60%'}}>
+                            <Button danger onClick={onReset} style={{marginRight:'1rem'}}>รีเซ็ต</Button>
+                            <Button type='primary' onClick={addRoom}>ยืนยัน</Button>
+                            </Form.Item>                             
                         </Form>
 
                     </Paper>
@@ -369,7 +374,7 @@ return (
                             <Form.Item label="บริการ">
                               <div style={{display:'flex'}}>
                                 <Input style={{marginRight:'1rem'}} onChange={(event)=>{setItemService1(event.target.value)}}/>
-                                <Button onClick={addService}>Add</Button>
+                                <Button onClick={addService}>เพิ่ม</Button>
                               </div>
                             
                             </Form.Item>  

@@ -118,39 +118,39 @@ const columns = [
 
 },
 {
-  title: 'First Name',
+  title: 'ชื่อ',
   dataIndex: 'firstname',
   align:'center',
   width:'35%'
 },
 {
-  title: 'Last Name',
+  title: 'นามสกุล',
   dataIndex: 'lastname',
   align:'center',
   width:'35%'
 },
 {
-  title: 'Date Start',
+  title: 'เช็คอิน',
   dataIndex: 'date_start',
   align:'center',
   width:'15%'
 },
 {
-  title: 'Date End',
+  title: 'เช็คเอาท์',
   dataIndex: 'date_end',
   align:'center',
   width:'15%'
 },
 
 {
-  title: 'Status',
+  title: 'สถานะ',
   dataIndex: 'status',
   width:'100%',
   render: (text) => <h5>{text}</h5>,
 },
 
 {
-  title: 'Edit / Delete',
+  title: 'แก้ไข / ลบ',
   dataIndex: 'edit',
   align:'center',
 
@@ -161,10 +161,10 @@ const data = Reserve.map((val, index) => ({
   id: val.id,
   id_room:val.id_room,
   id_user:val.id_user,
-  firstname:"222eee",
-  lastname:"addd",
-  date_start:val.date_start,
-  date_end:val.date_end,
+  firstname:"สมชาย",
+  lastname:"เข็มกลัด",
+  date_start:new Date(val.date_start).toLocaleString('en-GB'),
+  date_end:new Date(val.date_end).toLocaleString('en-GB'),
   status: val.status,
   edit: <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
         <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>Edit</Button>

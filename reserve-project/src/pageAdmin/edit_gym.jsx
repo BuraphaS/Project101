@@ -55,8 +55,8 @@ const edit_gym = () => {
         .then(function (response) {
               console.log(response);
               swal({
-                title: 'SUCCESS',
-                text: 'Press OK',
+                title: 'สำเร็จ',
+                text: 'กด OK',
                 icon: 'success',
                 button: 'OK',
               }).then(function(){
@@ -72,7 +72,7 @@ const edit_gym = () => {
         .then(function (response) {
           console.log(response);
           swal({
-            title:"Add Facilities Success",
+            title:"เพิ่มสำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -92,7 +92,7 @@ const edit_gym = () => {
             Axios.delete(`http://localhost:3000/delete/gym_facilities/${id}`)
               
             swal({
-              title:"Delete Success",
+              title:"ลบสำเร็จ",
               icon:"success",
               button:'OK'
             }).then(function(){
@@ -117,12 +117,12 @@ const edit_gym = () => {
             width:'5%'
         },
         {
-            title: 'Facilities',
+            title: 'สิ่งอำนวยความสะดวก',
             dataIndex: 'name',
             
         },
         {
-          title: 'Delete',
+          title: 'ลบ',
           dataIndex: 'edit',
           align:'center',
           width:'10%'
@@ -134,7 +134,7 @@ const edit_gym = () => {
         name: val.facilities,
         // detail: <p style={{width:'5%'}}>{val.detail}</p>,
         edit: 
-              <Button type='primary' danger onClick={() => deleteRoomFacilities(val.id)}>Delete</Button> 
+              <Button type='primary' danger onClick={() => deleteRoomFacilities(val.id)}>ลบ</Button> 
               
       }));
 
@@ -203,7 +203,11 @@ const edit_gym = () => {
         },
       }),
     );
-    
+    const onReset = () => {
+      form.resetFields();
+    };
+    const [form] = Form.useForm();
+
     const mdTheme = createTheme();
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
@@ -264,6 +268,7 @@ const edit_gym = () => {
                     <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'3rem 0rem',height:'90%'}}>
                     <h4 style={{textAlign:'center',marginBottom:'2rem'}}>เพิ่มข้อมูลออกกำลังกาย</h4>
                       <Form
+                              form={form}
                               labelCol={{
                               span: 4,
                               }}
@@ -276,16 +281,16 @@ const edit_gym = () => {
                               width:'100%'
                               }}
                           >   
-                              <Form.Item label="Name">
+                              <Form.Item label="ชื่อ" name="name">
                               <Input onChange={(event)=>{setRoom_name(event.target.value)}}/>
                               </Form.Item>          
                             
-                              <Form.Item label="Detail">
+                              <Form.Item label="รายละเอียด" name="detail">
                               <Input onChange={(event)=>{setDetail(event.target.value)}}/>
                               </Form.Item>          
 
                             
-                            <Form.Item label="สิ่งอำนวยความสะดวก">
+                            <Form.Item label="สิ่งอำนวยความสะดวก" name="facilities">
 
                            
                             <Select
@@ -313,7 +318,7 @@ const edit_gym = () => {
                             </Form.Item>  
                           
                 
-                            <Form.Item label="Upload" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
+                            <Form.Item label="รูปภาพ" name="picture" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFile(e.target.files[0])}>
                             <Upload listType="picture-card" >
                                 <div>
                                 <PlusOutlined />
@@ -328,9 +333,10 @@ const edit_gym = () => {
                             </Upload>
                             
                             </Form.Item>
-                            <Form.Item label="Press">
-                            <Button onClick={addRoom}>Submit</Button>
-                            </Form.Item>                           
+                            <Form.Item style={{marginLeft:'60%'}}>
+                            <Button danger onClick={onReset} style={{marginRight:'1rem'}}>รีเซ็ต</Button>
+                            <Button type='primary' onClick={addRoom}>ยืนยัน</Button>
+                            </Form.Item>                             
                         </Form>
 
                     </Paper>
@@ -369,7 +375,7 @@ const edit_gym = () => {
                             <Form.Item label="สิ่งอำนวยความสะดวก">
                               <div style={{display:'flex'}}>
                                 <Input style={{marginRight:'1rem'}} onChange={(event)=>{setItemFacilities1(event.target.value)}}/>
-                                <Button onClick={addFacilities}>Add</Button>
+                                <Button onClick={addFacilities}>เพิ่ม</Button>
                               </div>
                             
                             </Form.Item>  

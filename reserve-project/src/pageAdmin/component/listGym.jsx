@@ -33,7 +33,7 @@ const listGym = () => {
     Axios.put(`http://localhost:3000/Edit/gym_room/${id}`,{
       room_name:room_name || selectedCard.room_name,
       detail:detail || selectedCard.detail,
-      facilities:facilities.length > 0 ? facilities : selectedCard.facilities,
+      facilities:facilities || selectedCard.facilities,
     })
     .then(function (response) {
         console.log(response);
@@ -112,20 +112,20 @@ const listGym = () => {
             
         },
     {
-        title: 'Picture',
+        title: 'รูปภาพ',
         dataIndex: 'picture',
         align:'center',
         width:'45%',
     },
     {
-        title: 'Name',
+        title: 'ชื่อ',
         dataIndex: 'name',
         width:'100%',
         render: (text) => <h5>{text}</h5>,
     },
 
     {
-        title: 'Edit / Delete',
+        title: 'แก้ไข / ลบ',
         dataIndex: 'edit',
         align:'center',
     
@@ -138,8 +138,8 @@ const listGym = () => {
         name: val.room_name,
         // detail: <p style={{width:'5%'}}>{val.detail}</p>,
         edit: <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
-              <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>Edit</Button>
-              <Button type="primary" danger  onClick={() => deleteRoom(val.id)}>Delete</Button> 
+              <Button style={{marginRight:'0.5rem'}} type="primary" onClick={() => showModal(val)}>แก้ไข</Button>
+              <Button type="primary" danger  onClick={() => deleteRoom(val.id)}>ลบ</Button> 
               </div>,
       }));
 
@@ -163,11 +163,11 @@ const listGym = () => {
                     width:'100%'
                     }}
                 >   
-                    <Form.Item label="Name">
+                    <Form.Item label="ชื่อ">
                     <Input defaultValue={selectedCard.room_name} onChange={(event)=>{setRoom_name(event.target.value)}}/>
                     </Form.Item>         
 
-                    <Form.Item label="Detail">
+                    <Form.Item label="รายละเอียด">
                     <Input defaultValue={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
                     </Form.Item>
                     
@@ -179,7 +179,7 @@ const listGym = () => {
                          width: '100%',
                        }}
                        placeholder="เลือกสิ่งอำนวยความสะดวก"
-                       defaultValue={[]}
+                       defaultValue={selectedCard.facilities}
                        onChange={handleChange}
                        optionLabelProp="label"
                      >
@@ -198,7 +198,7 @@ const listGym = () => {
                        </Form.Item>  
                      
            
-                       <Form.Item label="Upload" valuePropName="fileList"  onChange={(e)=>setFile(e.target.files[0])}>
+                       <Form.Item label="รูปภาพ" valuePropName="fileList"  onChange={(e)=>setFile(e.target.files[0])}>
                        <Upload listType="picture-card" >
                            <div>
                            <PlusOutlined />

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Tab1 } from './styled';
 import { Button,Select,Space, Modal,Form,Input,Upload,Table,Image } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-
+import swal from 'sweetalert';
 import Axios from 'axios'
 const listRoom = () => {
     const [Room,setRoom] = useState([])
@@ -17,15 +17,7 @@ const listRoom = () => {
     const [facilities, setSelectedFacilities] = useState([]);
 
     const [facilities1,getFacilities] = useState([])
-    
-    // const [roomData,setForm] = useState({
-    //   room_name:'',
-    //   detail:'',
-    //   bed_type:'',
-    //   price:'',
-    //   quantity:'',
-    //   facilities:'',
-    // })
+
     const handleChange = (selectedValues) => {
       setSelectedFacilities(selectedValues);
     console.log(`selected ${selectedValues}`);
@@ -47,11 +39,18 @@ const listRoom = () => {
       detail: detail || selectedCard.detail,
       price: price || selectedCard.price,
       quantity: quantity || selectedCard.quantity,
-      facilities: facilities.length > 0 ? facilities : selectedCard.facilities,
+      facilities: facilities || selectedCard.facilities,
     })
     .then(function (response) {
       console.log(response);
-      window.location.reload()
+        swal({
+          title:"Changed Success",
+          icon:"success",
+          button:'OK'
+        }).then(function(){
+          location.reload();
+        })
+        
         })
     .catch(er => console.log(er))
 
@@ -113,20 +112,20 @@ const listRoom = () => {
                 
             },
         {
-            title: 'Picture',
+            title: 'รูปภาพ',
             dataIndex: 'picture',
             align:'center',
             width:'45%',
         },
         {
-            title: 'Name',
+            title: 'ชื่อ',
             dataIndex: 'name',
             width:'100%',
             render: (text) => <h5>{text}</h5>,
         },
    
         {
-            title: 'Edit / Delete',
+            title: 'แก้ไข / ลบ',
             dataIndex: 'edit',
             align:'center',
         
@@ -139,8 +138,8 @@ const listRoom = () => {
             name: val.room_name,
             // detail: <p style={{width:'5%'}}>{val.detail}</p>,
             edit: <div style={{width:'100%',display:'flex',textAlign:'center'}}>  
-                  <Button style={{marginRight:'0.5rem'}} type='primary' onClick={() => showModal(val)}>Edit</Button>
-                  <Button type='primary' danger onClick={() => deleteRoom(val.id)}>Delete</Button> 
+                  <Button style={{marginRight:'0.5rem'}} type='primary' onClick={() => showModal(val)}>แก้ไข</Button>
+                  <Button type='primary' danger onClick={() => deleteRoom(val.id)}>ลบ</Button> 
                   </div>,
           }));
   return (
@@ -168,7 +167,7 @@ const listRoom = () => {
                             </Form.Item>         
 
                             <Form.Item label="ขนาดของห้อง">
-                            <Input defaultValue={selectedCard.detail} onChange={(event)=>{setDetail(event.target.value)}}/>
+                            <Input defaultValue={selectedCard.detail} placeholder='ตารางเมตร' onChange={(event)=>{setDetail(event.target.value)}}/>
                             </Form.Item>
 
                             <Form.Item label="ลักษณะของเตียง">
@@ -191,7 +190,8 @@ const listRoom = () => {
                               width: '100%',
                             }}
                             placeholder="เลือกสิ่งอำนวยความสะดวก"
-                            defaultValue={[]}
+                            defaultValue={selectedCard.facilities}
+                            
                             onChange={handleChange}
                             optionLabelProp="label"
                           >

@@ -44,7 +44,6 @@ import {
     Card
   } from 'antd';
 
-import { mainListItems, secondaryListItems } from '../component/NavAdmin';
 
 
 const { RangePicker } = DatePicker;
@@ -58,6 +57,7 @@ const { RangePicker } = DatePicker;
 
 
 const edit_home = () => {
+  const [form] = Form.useForm();
         const [navColor,setNavColor] = useState("")
         const [navName,setNavName] = useState("")
         const [bgColor,setbgColor] = useState("")
@@ -108,28 +108,27 @@ const edit_home = () => {
           getUser();
         }, []);
 
-        
+    const addCarousel = ()=>{
+      const formData = new FormData()
+      formData.append('file',file_name)
+      Axios.post('http://localhost:3000/homepage',formData
+       ,{
+        file_name: file_name,        
+       }
+      )
+      .then(function (response) {
+            console.log(response);
+            swal({
+              title:"เพิ่มรูปภาพ สำเร็จ",
+              icon:"success",
+              button:'OK'
+            }).then(function(){
+              location.reload();})
+          })
+      .catch(er => console.log(er))
+    } 
 
-    const addHome = () =>{
-        const formData = new FormData()
-        formData.append('file',file_name)
-        Axios.post('http://localhost:3000/homepage',formData
-         ,{
-          file_name: file_name,        
-         }
-        )
-        .then(function (response) {
-              console.log(response);
-              swal({
-                title:"Add Picture Success",
-                icon:"success",
-                button:'OK'
-              }).then(function(){
-                location.reload();})
-            })
-        .catch(er => console.log(er))
-
-       
+    const addHome = () =>{     
 
 
         Axios.put('http://localhost:3000/home',{
@@ -142,7 +141,7 @@ const edit_home = () => {
          .then(function (response) {
           console.log(response);
           swal({
-            title:"Changed Success",
+            title:"แก้ไขข้อมูลสำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -164,7 +163,7 @@ const edit_home = () => {
      .then(function (response) {
            console.log(response);
            swal({
-            title:"Add Success",
+            title:"เพิ่ม สำเร็จ",
             icon:"success",
             button:'OK'
           }).then(function(){
@@ -239,7 +238,10 @@ const edit_home = () => {
           },
         }),
       );
-      
+
+      const onReset = () => {
+        form.resetFields();
+      };
       const mdTheme = createTheme();
       const [open, setOpen] = React.useState(true);
       const toggleDrawer = () => {
@@ -301,6 +303,7 @@ const edit_home = () => {
                       <div style={{display: 'flex',justifyContent:'space-between',width:'100%'}}>
                     {Home.map((val,index)=>(    
                       <Form
+                            
                             labelCol={{
                             span: 6,
                             }}
@@ -325,8 +328,9 @@ const edit_home = () => {
                             <input type="color" name="color" defaultValue={val.bgColor} id="color" style={{width:'100%',borderRadius:'3px',padding:'1px'}} onChange={(event)=>{
                             setbgColor(event.target.value)}}/>
                             </Form.Item>
-                            
-                            <Form.Item label="รูปภาพ SlideShow" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCarousel(e.target.files[0])}>
+                            <Button style={{width:'58%',justifyContent:'center',marginLeft:'8.4rem',marginBottom:'1rem',alignItems:'center',textAlign:'center'}} onClick={addHome}>ยืนยัน</Button>
+
+                            <Form.Item label="รูปภาพ สไลด์โชว์"  valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCarousel(e.target.files[0])}>
                             <Upload listType="picture-card" >
                                 <div>
                                 <PlusOutlined />
@@ -339,14 +343,15 @@ const edit_home = () => {
                                 </div>
                                 </div>
                             </Upload>
-                            
+                            <Button onClick={addCarousel}>อัปโหลด</Button>
                             </Form.Item>
                             
-                            <Button style={{width:'58%',justifyContent:'center',marginLeft:'8.4rem',alignItems:'center',textAlign:'center'}} onClick={addHome}>Submit</Button>
+                            
                                                     
                         </Form>
  ))}
                         <Form
+                            form={form}
                             labelCol={{
                             span: 4,
                             }}
@@ -360,13 +365,13 @@ const edit_home = () => {
                             }}
                         >   
                         <h5 style={{marginBottom:'2rem',textAlign:'center'}}>เพิ่มข้อมูลที่โชว์หน้าแรก</h5>
-                            <Form.Item label="Title">
+                            <Form.Item label="ชื่อ" name="name">
                               <Input onChange={(event)=>{setTitle(event.target.value)}}/>
                             </Form.Item>
-                            <Form.Item label="Detail">
+                            <Form.Item label="รายละเอียด" name="detail">
                               <Input onChange={(event)=>{setDetail(event.target.value)}}/>
                             </Form.Item>
-                           <Form.Item label="รูปภาพ" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCard(e.target.files[0])}>
+                           <Form.Item label="รูปภาพ"name="picture" valuePropName="fileList" getValueFromEvent={normFile} onChange={(e)=>setFileCard(e.target.files[0])}>
                             <Upload listType="picture-card" >
                                 <div>
                                 <PlusOutlined />
@@ -381,9 +386,12 @@ const edit_home = () => {
                             </Upload>
                             
                             </Form.Item>
-                            <Form.Item label="Press">
-                            <Button onClick={addCard}>Submit</Button>
-                            </Form.Item>                           
+                            <div style={{display:'flex',justifyContent:'center'}}>
+                              <Button type='primary' danger style={{width:'15%',marginRight:'0.5rem'}} onClick={onReset}>เคลียร์</Button>
+                              <Button type='primary' style={{width:'35%'}} onClick={addCard}>ยืนยัน</Button>
+                            
+                            </div>
+                                                     
                         </Form>
  
                       </div>
@@ -411,7 +419,7 @@ const edit_home = () => {
 
                   <Grid item xs={12}>
                     <Paper sx={{ p: 4,display:'flex', flexDirection: 'column' }} style={{boxShadow: 'rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px',margin:'2rem 0rem',height:'90%'}}>
-                    <h4>รูปภาพ slide show</h4>
+                    <h4>รูปภาพสไลด์หน้าแรก </h4>
                         <ListCarousel />
                       
                     </Paper>

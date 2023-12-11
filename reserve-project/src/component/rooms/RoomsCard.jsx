@@ -33,7 +33,7 @@ const RoomsCard = () => {
                     <Card.Title style={{fontSize:'1.7rem'}}>{item.room_name}</Card.Title>
                     <Card.Text>
                         <ul style={{listStyle:'none'}}>
-                            <li>ขนาดห้อง : {item.detail}</li>
+                            <li>ขนาดห้อง : {item.detail} ตารางเมตร</li>
                             <li>ลักษณะเตียง : {item.bed_type}</li>
                             <li>จำนวนคน : {item.quantity} คน</li>
                             
@@ -45,6 +45,15 @@ const RoomsCard = () => {
                     <ul>
                         <li>
                             {item.facilities}
+                        </li>
+                    
+                    </ul>
+                    <Card.Title>
+                        ราคา
+                    </Card.Title>
+                    <ul>
+                        <li>
+                            {item.price} บาท / คืน
                         </li>
                     
                     </ul>

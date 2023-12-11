@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
         localStorage.removeItem('token');
       
         swal({
-          title:"Logout Success",
+          title:"ออกจากระบบ สำเร็จ",
           icon:"success",
           button:'OK'
         }).then(function(){
@@ -63,7 +63,7 @@ import { useNavigate } from 'react-router-dom';
       <div>
        
           {Home.map((val, index) => (
-          <Navbar style={{backgroundColor:val.navColor,opacity:'95%'}}  key="sm" expand="sm" className=" mb-1 fixed-top">
+          <Navbar style={{backgroundColor:val.navColor,opacity:'95%'}}  key="sm" expand="sm" className=" mb-1 pe-3 ps-3 fixed-top">
               <Container fluid>
               
               <Navbar.Brand href="#home">{val.navName}</Navbar.Brand>
@@ -92,11 +92,21 @@ import { useNavigate } from 'react-router-dom';
               <NavDropdown.Divider />
               <NavDropdown.Item href="/roomPage1#spa">Spa</NavDropdown.Item>
               </NavDropdown>
+              
               {User ? (
-                  <Nav.Link key={index} href="/change" >{User.firstname} {User.lastname}</Nav.Link>
+                <NavDropdown title={User.firstname+" "+" "+User.lastname} id="basic-nav-dropdown">
+                <NavDropdown.Item href="/reserve">รายการจอง</NavDropdown.Item>
+                <NavDropdown.Item href="/change">
+                  แก้ไขข้อมูลส่วนตัว
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item href="#" onClick={handleLogout}>ออกจากระบบ</NavDropdown.Item>
+                </NavDropdown>
+                 
+                  
               ):
               <Nav.Link key={index} href="#" ></Nav.Link>}
-                   <Nav.Link href="" onClick={handleLogout} >LOGOUT</Nav.Link>
+                   
                   </Nav>
                   
                 </Offcanvas.Body>
